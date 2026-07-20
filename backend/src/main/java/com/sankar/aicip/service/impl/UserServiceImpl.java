@@ -7,6 +7,7 @@ import com.sankar.aicip.dto.response.UserResponse;
 import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.exception.EmailAlreadyExistsException;
+import com.sankar.aicip.exception.InvalidCredentialsException;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public UserResponse registerUser(UserRegistrationRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -53,18 +55,20 @@ public class UserServiceImpl implements UserService {
 
         return response;
     }
+
     @Override
     public LoginResponse loginUser(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
+
                 .orElseThrow(() ->
-                        new RuntimeException("Invalid email or password."));
+                        new InvalidCredentialsException("Invalid email or password."));
 
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword())) {
 
-            throw new RuntimeException("Invalid email or password.");
+            throw new InvalidCredentialsException("Invalid email or password.");
         }
 
         LoginResponse response = new LoginResponse();
