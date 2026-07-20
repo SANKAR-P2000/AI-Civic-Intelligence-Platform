@@ -7,15 +7,20 @@ import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
 import com.sankar.aicip.exception.EmailAlreadyExistsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -28,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhoneNumber(request.getPhoneNumber());
 
         user.setRole(UserRole.CITIZEN);
