@@ -2,6 +2,8 @@ package com.sankar.aicip.controller;
 import jakarta.validation.Valid;
 import com.sankar.aicip.dto.request.UserRegistrationRequest;
 import com.sankar.aicip.dto.response.UserResponse;
+import com.sankar.aicip.dto.request.LoginRequest;
+import com.sankar.aicip.dto.response.LoginResponse;
 import com.sankar.aicip.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +26,13 @@ public class UserController {
         UserResponse response = userService.registerUser(request);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> loginUser(
+            @Valid @RequestBody LoginRequest request) {
+
+        LoginResponse response = userService.loginUser(request);
+
+        return ResponseEntity.ok(response);
     }
 }
