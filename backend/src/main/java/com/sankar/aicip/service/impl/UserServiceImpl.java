@@ -10,6 +10,8 @@ import com.sankar.aicip.exception.EmailAlreadyExistsException;
 import com.sankar.aicip.exception.InvalidCredentialsException;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
+import com.sankar.aicip.security.jwt.JwtService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +22,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService){
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -70,6 +76,14 @@ public class UserServiceImpl implements UserService {
 
             throw new InvalidCredentialsException("Invalid email or password.");
         }
+        UserDetails userDetails =
+                org.springframework.security.core.userdetails.User
+                        .withUsername(user.getEmail())
+                        .password(user.getPassword())
+                        .roles(user.getRole().name())
+                        .build();
+
+        String token = jwtService.generateToken(userDetails);
 
         LoginResponse response = new LoginResponse();
 
@@ -79,7 +93,7 @@ public class UserServiceImpl implements UserService {
         response.setPhoneNumber(user.getPhoneNumber());
         response.setRole(user.getRole().name());
         response.setLoginTime(LocalDateTime.now());
-
+        response.setToken(token);
         return response;
     }
 }

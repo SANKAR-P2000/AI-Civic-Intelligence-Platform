@@ -10,6 +10,7 @@ public class LoginResponse {
     private String phoneNumber;
     private String role;
     private LocalDateTime loginTime;
+    private String token;
 
     public LoginResponse() {
     }
@@ -60,5 +61,13 @@ public class LoginResponse {
 
     public void setLoginTime(LocalDateTime loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
