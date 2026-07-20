@@ -1,5 +1,5 @@
 package com.sankar.aicip.controller;
-
+import jakarta.validation.Valid;
 import com.sankar.aicip.dto.request.UserRegistrationRequest;
 import com.sankar.aicip.dto.response.UserResponse;
 import com.sankar.aicip.service.UserService;
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(
-            @RequestBody UserRegistrationRequest request) {
+            @Valid @RequestBody UserRegistrationRequest request) {
 
         UserResponse response = userService.registerUser(request);
 

@@ -6,6 +6,7 @@ import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
+import com.sankar.aicip.exception.EmailAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registerUser(UserRegistrationRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exists.");
+        }
 
         User user = new User();
 
