@@ -97,6 +97,15 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         return mapToResponse(updatedComplaint);
     }
+    @Override
+    public ComplaintResponse trackComplaint(Long complaintId) {
+
+        Complaint complaint = complaintRepository.findById(complaintId)
+                .orElseThrow(() ->
+                        new RuntimeException("Complaint not found."));
+
+        return mapToResponse(complaint);
+    }
     private ComplaintResponse mapToResponse(Complaint complaint) {
 
         ComplaintResponse response = new ComplaintResponse();

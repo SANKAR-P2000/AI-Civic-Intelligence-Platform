@@ -13,8 +13,8 @@ public interface ComplaintService {
     List<ComplaintResponse> getMyComplaints();
 
     List<ComplaintResponse> getAllComplaints();
-
     ComplaintResponse updateComplaintStatus(
             Long complaintId,
             ComplaintStatus status);
+    ComplaintResponse trackComplaint(Long complaintId);
 }

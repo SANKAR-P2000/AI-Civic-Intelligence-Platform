@@ -50,4 +50,10 @@ public class ComplaintController {
 
         return complaintService.updateComplaintStatus(id, status);
     }
+    @GetMapping("/track/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ComplaintResponse trackComplaint(@PathVariable Long id) {
+
+        return complaintService.trackComplaint(id);
+    }
 }
