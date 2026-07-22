@@ -6,11 +6,13 @@ import com.sankar.aicip.dto.response.LoginResponse;
 import com.sankar.aicip.dto.response.UserResponse;
 import com.sankar.aicip.dto.response.CurrentUserResponse;
 import com.sankar.aicip.entity.User;
+import com.sankar.aicip.entity.RefreshToken;
 import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.exception.EmailAlreadyExistsException;
 import com.sankar.aicip.exception.InvalidCredentialsException;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
+import com.sankar.aicip.service.RefreshTokenService;
 import com.sankar.aicip.security.jwt.JwtService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,15 +26,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService){
+            JwtService jwtService, RefreshTokenService refreshTokenService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -85,7 +89,8 @@ public class UserServiceImpl implements UserService {
                         .build();
 
         String token = jwtService.generateToken(userDetails);
-
+        RefreshToken refreshToken =
+                refreshTokenService.createRefreshToken(user);
         LoginResponse response = new LoginResponse();
 
         response.setId(user.getId());
@@ -95,8 +100,10 @@ public class UserServiceImpl implements UserService {
         response.setRole(user.getRole().name());
         response.setLoginTime(LocalDateTime.now());
         response.setToken(token);
+        response.setRefreshToken(refreshToken.getToken());
         return response;
     }
+
     @Override
     public CurrentUserResponse getCurrentUser(String email) {
 

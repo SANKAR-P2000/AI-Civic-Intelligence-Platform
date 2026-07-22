@@ -11,6 +11,7 @@ public class LoginResponse {
     private String role;
     private LocalDateTime loginTime;
     private String token;
+    private String refreshToken;
 
     public LoginResponse() {
     }
@@ -70,4 +71,11 @@ public class LoginResponse {
     public void setToken(String token) {
         this.token = token;
     }
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
