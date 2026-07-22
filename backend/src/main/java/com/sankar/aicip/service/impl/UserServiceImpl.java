@@ -4,6 +4,7 @@ import com.sankar.aicip.dto.request.LoginRequest;
 import com.sankar.aicip.dto.request.UserRegistrationRequest;
 import com.sankar.aicip.dto.response.LoginResponse;
 import com.sankar.aicip.dto.response.UserResponse;
+import com.sankar.aicip.dto.response.CurrentUserResponse;
 import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.exception.EmailAlreadyExistsException;
@@ -94,6 +95,24 @@ public class UserServiceImpl implements UserService {
         response.setRole(user.getRole().name());
         response.setLoginTime(LocalDateTime.now());
         response.setToken(token);
+        return response;
+    }
+    @Override
+    public CurrentUserResponse getCurrentUser(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found."));
+
+        CurrentUserResponse response = new CurrentUserResponse();
+
+        response.setId(user.getId());
+        response.setFullName(user.getFullName());
+        response.setEmail(user.getEmail());
+        response.setPhoneNumber(user.getPhoneNumber());
+        response.setRole(user.getRole().name());
+        response.setCreatedAt(user.getCreatedAt());
+
         return response;
     }
 }
