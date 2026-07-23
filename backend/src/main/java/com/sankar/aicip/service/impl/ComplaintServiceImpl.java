@@ -116,7 +116,13 @@ public class ComplaintServiceImpl implements ComplaintService {
         response.setCategory(complaint.getCategory());
         response.setStatus(complaint.getStatus());
         response.setLocation(complaint.getLocation());
-        response.setImageUrl(complaint.getImageUrl());
+        if (complaint.getImageUrl() != null) {
+
+            response.setImageUrl(
+                    "http://localhost:8080/uploads/"
+                            + complaint.getImageUrl());
+
+        }
 
         response.setCitizenName(
                 complaint.getCitizen().getFullName());

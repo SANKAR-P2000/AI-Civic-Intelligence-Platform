@@ -45,3 +45,6 @@ build/
 # ==========================
 *.tmp
 *.swp
+
+# Uploaded files
+uploads/
