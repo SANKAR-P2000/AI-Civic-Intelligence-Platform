@@ -1,4 +1,5 @@
 package com.sankar.aicip.service.impl;
+
 import com.sankar.aicip.dto.request.CreateComplaintRequest;
 import com.sankar.aicip.dto.response.ComplaintResponse;
 import com.sankar.aicip.entity.Complaint;
@@ -7,24 +8,29 @@ import com.sankar.aicip.enums.ComplaintStatus;
 import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.ComplaintService;
+import com.sankar.aicip.service.email.EmailService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 
     private final ComplaintRepository complaintRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     public ComplaintServiceImpl(
             ComplaintRepository complaintRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            EmailService emailService) {
 
         this.complaintRepository = complaintRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     // methods...
@@ -52,9 +58,17 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint savedComplaint =
                 complaintRepository.save(complaint);
+        emailService.sendComplaintSubmittedEmail(
+                savedComplaint.getCitizen().getEmail(),
+                savedComplaint.getCitizen().getFullName(),
+                savedComplaint.getId(),
+                savedComplaint.getCategory().name(),
+                savedComplaint.getStatus().name()
+        );
 
         return mapToResponse(savedComplaint);
     }
+
     @Override
     public List<ComplaintResponse> getMyComplaints() {
 
@@ -72,6 +86,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
+
     @Override
     public List<ComplaintResponse> getAllComplaints() {
 
@@ -80,6 +95,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
+
     @Override
     public ComplaintResponse updateComplaintStatus(
             Long complaintId,
@@ -94,9 +110,16 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint updatedComplaint =
                 complaintRepository.save(complaint);
+        emailService.sendComplaintStatusUpdatedEmail(
+                updatedComplaint.getCitizen().getEmail(),
+                updatedComplaint.getCitizen().getFullName(),
+                updatedComplaint.getId(),
+                updatedComplaint.getStatus().name()
+        );
 
         return mapToResponse(updatedComplaint);
     }
+
     @Override
     public ComplaintResponse trackComplaint(Long complaintId) {
 
@@ -106,6 +129,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         return mapToResponse(complaint);
     }
+
     private ComplaintResponse mapToResponse(Complaint complaint) {
 
         ComplaintResponse response = new ComplaintResponse();

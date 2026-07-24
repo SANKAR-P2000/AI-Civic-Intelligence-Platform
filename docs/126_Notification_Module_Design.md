@@ -14,17 +14,17 @@ Phase 17 – Notifications & Email Module
 
 # Objective
 
-Provide automated email notifications for important user and complaint events.
+Implement an automated notification system that sends real emails to users for important events.
 
 ---
 
-# Notification Flow
+# Architecture
 
 Citizen
 
 ↓
 
-Complaint Created
+Complaint Service
 
 ↓
 
@@ -32,21 +32,25 @@ Email Service
 
 ↓
 
-SMTP Server
+JavaMailSender
 
 ↓
 
-Citizen Email
+Gmail SMTP
+
+↓
+
+Citizen Email Inbox
 
 ---
 
-# Supported Notifications
+# Planned Notifications
 
-- Complaint Submission
-- Complaint Status Updates
-- Complaint Resolution
-- Complaint Rejection
 - Welcome Email
+- Complaint Submitted
+- Complaint Status Updated
+- Complaint Resolved
+- Complaint Rejected
 - Password Reset
 - Email Verification
 
@@ -56,17 +60,17 @@ Citizen Email
 
 - Spring Boot Mail
 - JavaMailSender
-- SMTP
 - Gmail SMTP
+- MIME HTML Email
 
 ---
 
 # Benefits
 
-- Improved communication
-- Automated notifications
-- Reusable architecture
-- Easy cloud email integration
+- Real email delivery
+- Professional communication
+- Modular design
+- Easily extensible
 
 ---
 
@@ -75,7 +79,7 @@ Citizen Email
 - SMS Notifications
 - Push Notifications
 - In-App Notifications
-- WebSocket Real-Time Alerts
+- Scheduled Reminder Emails
 
 ---
 
