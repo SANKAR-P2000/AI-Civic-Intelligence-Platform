@@ -7,6 +7,9 @@ import com.sankar.aicip.service.RefreshTokenService;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.sankar.aicip.dto.response.RefreshTokenResponse;
+import com.sankar.aicip.security.jwt.JwtService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,10 +20,16 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private static final long REFRESH_TOKEN_VALIDITY_DAYS = 7;
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtService jwtService;
 
-    public RefreshTokenServiceImpl(RefreshTokenRepository refreshTokenRepository) {
+    public RefreshTokenServiceImpl(
+            RefreshTokenRepository refreshTokenRepository,
+            JwtService jwtService) {
+
         this.refreshTokenRepository = refreshTokenRepository;
+        this.jwtService = jwtService;
     }
+
 
     @Override
     public RefreshToken createRefreshToken(User user) {
@@ -61,9 +70,42 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     @Transactional
-    @Modifying
     public void deleteByUser(User user) {
-
         refreshTokenRepository.deleteByUser(user);
+    }
+
+    @Override
+    public RefreshTokenResponse refreshAccessToken(String refreshTokenValue) {
+
+        RefreshToken refreshToken =
+                verifyRefreshToken(refreshTokenValue);
+
+        User user = refreshToken.getUser();
+
+        UserDetails userDetails =
+                org.springframework.security.core.userdetails.User
+                        .withUsername(user.getEmail())
+                        .password(user.getPassword())
+                        .roles(user.getRole().name())
+                        .build();
+
+        String accessToken =
+                jwtService.generateToken(userDetails);
+
+        return new RefreshTokenResponse(
+                accessToken,
+                refreshToken.getToken()
+        );
+    }
+    @Override
+    @Transactional
+    public void logout(String refreshTokenValue) {
+
+        RefreshToken refreshToken = refreshTokenRepository
+                .findByToken(refreshTokenValue)
+                .orElseThrow(() ->
+                        new RuntimeException("Refresh token not found."));
+
+        refreshTokenRepository.delete(refreshToken);
     }
 }

@@ -1,17 +1,14 @@
 package com.sankar.aicip.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class RefreshTokenResponse {
 
-    private String accessToken;
+    private String token;
 
-    public RefreshTokenResponse() {
-    }
+    private String refreshToken;
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }

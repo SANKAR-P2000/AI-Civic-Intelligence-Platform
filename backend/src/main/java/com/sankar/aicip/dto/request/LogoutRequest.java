@@ -1,17 +1,14 @@
 package com.sankar.aicip.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class LogoutRequest {
 
-    private String email;
+    @NotBlank(message = "Refresh token is required.")
+    private String refreshToken;
 
-    public LogoutRequest() {
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
