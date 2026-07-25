@@ -9,6 +9,7 @@ public interface EmailService {
             String category,
             String status
     );
+
     void sendComplaintStatusUpdatedEmail(
             String toEmail,
             String citizenName,

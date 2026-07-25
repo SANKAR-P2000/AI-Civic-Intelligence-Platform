@@ -58,13 +58,22 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint savedComplaint =
                 complaintRepository.save(complaint);
-        emailService.sendComplaintSubmittedEmail(
-                savedComplaint.getCitizen().getEmail(),
-                savedComplaint.getCitizen().getFullName(),
-                savedComplaint.getId(),
-                savedComplaint.getCategory().name(),
-                savedComplaint.getStatus().name()
-        );
+        try {
+
+            emailService.sendComplaintSubmittedEmail(
+                    savedComplaint.getCitizen().getEmail(),
+                    savedComplaint.getCitizen().getFullName(),
+                    savedComplaint.getId(),
+                    savedComplaint.getCategory().name(),
+                    savedComplaint.getStatus().name()
+            );
+
+        } catch (Exception ex) {
+
+            System.err.println(
+                    "Complaint created successfully, but email notification failed."
+            );
+        }
 
         return mapToResponse(savedComplaint);
     }
@@ -110,12 +119,21 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint updatedComplaint =
                 complaintRepository.save(complaint);
-        emailService.sendComplaintStatusUpdatedEmail(
-                updatedComplaint.getCitizen().getEmail(),
-                updatedComplaint.getCitizen().getFullName(),
-                updatedComplaint.getId(),
-                updatedComplaint.getStatus().name()
-        );
+        try {
+
+            emailService.sendComplaintStatusUpdatedEmail(
+                    updatedComplaint.getCitizen().getEmail(),
+                    updatedComplaint.getCitizen().getFullName(),
+                    updatedComplaint.getId(),
+                    updatedComplaint.getStatus().name()
+            );
+
+        } catch (Exception ex) {
+
+            System.err.println(
+                    "Complaint updated successfully, but email notification failed."
+            );
+        }
 
         return mapToResponse(updatedComplaint);
     }

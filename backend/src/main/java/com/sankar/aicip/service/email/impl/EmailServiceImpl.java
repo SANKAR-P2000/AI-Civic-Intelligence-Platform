@@ -1,14 +1,20 @@
 package com.sankar.aicip.service.email.impl;
 
 import com.sankar.aicip.service.email.EmailService;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+
+    private static final String APP_NAME =
+            "AI Civic Intelligence Platform";
 
     public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -22,25 +28,78 @@ public class EmailServiceImpl implements EmailService {
             String category,
             String status) {
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
 
-        message.setTo(toEmail);
+            MimeMessage message =
+                    mailSender.createMimeMessage();
 
-        message.setSubject("Complaint Submitted Successfully");
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, true, "UTF-8");
 
-        message.setText(
-                "Hello " + citizenName + ",\n\n"
-                        + "Your complaint has been submitted successfully.\n\n"
-                        + "Complaint ID : " + complaintId + "\n"
-                        + "Category     : " + category + "\n"
-                        + "Status       : " + status + "\n\n"
-                        + "Thank you for helping improve your city.\n\n"
-                        + "Regards,\n"
-                        + "AI Civic Intelligence Platform"
-        );
+            helper.setTo(toEmail);
 
-        mailSender.send(message);
+            helper.setSubject("Complaint Submitted Successfully");
+            String body = """
+                    <p>Hello <b>%s</b>,</p>
+                    
+                    <p>
+                        Your complaint has been submitted successfully.
+                    </p>
+                    
+                    <table style="width:100%%;border-collapse:collapse;">
+                    
+                        <tr>
+                            <td><b>Complaint ID</b></td>
+                            <td>%d</td>
+                        </tr>
+                    
+                        <tr>
+                            <td><b>Category</b></td>
+                            <td>%s</td>
+                        </tr>
+                    
+                        <tr>
+                            <td><b>Status</b></td>
+                            <td style="color:#F9A825;">
+                                <b>%s</b>
+                            </td>
+                        </tr>
+                    
+                    </table>
+                    
+                    <br>
+                    
+                    <p>
+                        Thank you for helping improve your city.
+                    </p>
+                    """.formatted(
+                    citizenName,
+                    complaintId,
+                    category,
+                    status
+            );
+
+            String html = buildEmailTemplate(
+                    APP_NAME,
+                    body
+            );
+
+            helper.setText(html, true);
+
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+
+            System.err.println("==================================");
+            System.err.println("EMAIL SEND FAILED");
+            System.err.println("Recipient : " + toEmail);
+            System.err.println("Reason    : " + e.getMessage());
+            System.err.println("==================================");
+
+            e.printStackTrace();
+        }
     }
+
     @Override
     public void sendComplaintStatusUpdatedEmail(
             String toEmail,
@@ -48,22 +107,135 @@ public class EmailServiceImpl implements EmailService {
             Long complaintId,
             String status) {
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
 
-        message.setTo(toEmail);
+            MimeMessage message =
+                    mailSender.createMimeMessage();
 
-        message.setSubject("Complaint Status Updated");
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, true, "UTF-8");
 
-        message.setText(
-                "Hello " + citizenName + ",\n\n"
-                        + "The status of your complaint has been updated.\n\n"
-                        + "Complaint ID : " + complaintId + "\n"
-                        + "New Status   : " + status + "\n\n"
-                        + "Thank you for using AI Civic Intelligence Platform.\n\n"
-                        + "Regards,\n"
-                        + "AI Civic Intelligence Platform"
-        );
+            helper.setTo(toEmail);
 
-        mailSender.send(message);
+            helper.setSubject("Complaint Status Updated");
+
+            String statusColor = switch (status) {
+                case "PENDING" -> "#F9A825";
+                case "UNDER_REVIEW" -> "#FB8C00";
+                case "IN_PROGRESS" -> "#1565C0";
+                case "RESOLVED" -> "#2E7D32";
+                case "REJECTED" -> "#C62828";
+                default -> "#616161";
+            };
+            String body = """
+                    <p>Hello <b>%s</b>,</p>
+                    
+                    <p>
+                        The status of your complaint has been updated.
+                    </p>
+                    
+                    <table style="width:100%%;border-collapse:collapse;">
+                    
+                        <tr>
+                            <td style="padding:8px;"><b>Complaint ID</b></td>
+                            <td style="padding:8px;">%d</td>
+                        </tr>
+                    
+                        <tr>
+                            <td style="padding:8px;"><b>New Status</b></td>
+                            <td style="padding:8px;">
+                    
+                                <span style="
+                                    background:%s;
+                                    color:white;
+                                    padding:6px 12px;
+                                    border-radius:6px;
+                                    font-weight:bold;">
+                    
+                                    %s
+                    
+                                </span>
+                    
+                            </td>
+                        </tr>
+                    
+                    </table>
+                    
+                    <br>
+                    
+                    <p>
+                        Thank you for using AI Civic Intelligence Platform.
+                    </p>
+                    """.formatted(
+                    citizenName,
+                    complaintId,
+                    statusColor,
+                    status
+            );
+
+            String html = buildEmailTemplate(
+                    APP_NAME,
+                    body
+            );
+
+
+            helper.setText(html, true);
+
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+
+            System.err.println("==================================");
+            System.err.println("EMAIL SEND FAILED");
+            System.err.println("Recipient : " + toEmail);
+            System.err.println("Reason    : " + e.getMessage());
+            System.err.println("==================================");
+
+            e.printStackTrace();
+
+        }
+    }
+
+    private String buildEmailTemplate(
+            String title,
+            String body) {
+
+        return """
+                <html>
+                <body style="font-family:Arial;background:#f4f6f8;padding:30px;">
+                
+                    <div style="
+                        max-width:600px;
+                        margin:auto;
+                        background:white;
+                        border-radius:10px;
+                        padding:30px;
+                        box-shadow:0 0 10px #dddddd;">
+                
+                        <h2 style="color:#1565C0;">
+                            %s
+                        </h2>
+                
+                        %s
+                
+                        <hr>
+                
+                        <p style="
+                            color:gray;
+                            font-size:12px;
+                            text-align:center;">
+                
+                            © 2026 AI Civic Intelligence Platform
+                
+                        </p>
+                
+                    </div>
+                
+                </body>
+                </html>
+                """.formatted(title, body);
     }
 }
+
+
+

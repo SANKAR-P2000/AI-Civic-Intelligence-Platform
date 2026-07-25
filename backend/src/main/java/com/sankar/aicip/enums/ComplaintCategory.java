@@ -18,5 +18,6 @@ public enum ComplaintCategory {
 
     ENVIRONMENT,
 
+    ANIMAL_CONTROL,
     OTHER
 }
