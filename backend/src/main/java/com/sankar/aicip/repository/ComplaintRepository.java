@@ -8,16 +8,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.sankar.aicip.dto.response.CategoryStatisticsResponse;
 import com.sankar.aicip.dto.response.StatusStatisticsResponse;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
-    List<Complaint> findByCitizen(User citizen);
 
     long count();
 
     long countByStatus(ComplaintStatus status);
+
+    List<Complaint> findByCitizen(User citizen);
 
     long countByCategory(ComplaintCategory category);
 
@@ -25,6 +27,17 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     List<Complaint> findByCitizenAndStatus(User citizen,
                                            ComplaintStatus status);
+
+    List<Complaint> findAllByOrderByCreatedAtDesc();
+
+    List<Complaint> findByStatusOrderByCreatedAtDesc(
+            ComplaintStatus status);
+
+    List<Complaint> findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(
+            String keyword);
+
+    List<Complaint> findByLocationContainingIgnoreCaseOrderByCreatedAtDesc(
+            String keyword);
 
 
     @Query("""
@@ -49,4 +62,18 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
             ORDER BY COUNT(c) DESC
             """)
     List<StatusStatisticsResponse> getComplaintCountByStatus();
+
+    @Query("""
+SELECT c
+FROM Complaint c
+WHERE
+LOWER(c.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+OR LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+OR LOWER(c.location) LIKE LOWER(CONCAT('%', :keyword, '%'))
+OR LOWER(c.citizen.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+OR LOWER(c.citizen.email) LIKE LOWER(CONCAT('%', :keyword, '%'))
+ORDER BY c.createdAt DESC
+""")
+    List<Complaint> searchComplaints(
+            @Param("keyword") String keyword);
 }
