@@ -97,6 +97,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 refreshToken.getToken()
         );
     }
+
     @Override
     @Transactional
     public void logout(String refreshTokenValue) {
