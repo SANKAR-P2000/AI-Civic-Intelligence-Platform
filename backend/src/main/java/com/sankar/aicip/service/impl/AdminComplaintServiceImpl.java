@@ -1,11 +1,13 @@
 package com.sankar.aicip.service.impl;
 
 import com.sankar.aicip.dto.response.admin.AdminComplaintResponse;
+import com.sankar.aicip.dto.request.ComplaintStatusUpdateRequest;
 import com.sankar.aicip.entity.Complaint;
 import com.sankar.aicip.enums.ComplaintStatus;
 import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.service.AdminComplaintService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -84,5 +86,23 @@ public class AdminComplaintServiceImpl
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+    @Override
+    @Transactional
+    public AdminComplaintResponse updateComplaintStatus(
+            Long complaintId,
+            ComplaintStatusUpdateRequest request) {
+
+        Complaint complaint = complaintRepository
+                .findById(complaintId)
+                .orElseThrow(() ->
+                        new RuntimeException("Complaint not found."));
+
+        complaint.setStatus(request.getStatus());
+
+        Complaint updatedComplaint =
+                complaintRepository.save(complaint);
+
+        return mapToResponse(updatedComplaint);
     }
 }

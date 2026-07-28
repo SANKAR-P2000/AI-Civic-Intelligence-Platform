@@ -1,5 +1,6 @@
 package com.sankar.aicip.service;
 
+import com.sankar.aicip.dto.request.ComplaintStatusUpdateRequest;
 import com.sankar.aicip.dto.response.admin.AdminComplaintResponse;
 import com.sankar.aicip.enums.ComplaintStatus;
 
@@ -15,5 +16,8 @@ public interface AdminComplaintService {
             ComplaintStatus status);
 
     List<AdminComplaintResponse> searchComplaints(String keyword);
+    AdminComplaintResponse updateComplaintStatus(
+            Long complaintId,
+            ComplaintStatusUpdateRequest request);
 
 }
