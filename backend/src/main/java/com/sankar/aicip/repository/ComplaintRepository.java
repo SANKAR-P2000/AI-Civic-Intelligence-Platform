@@ -64,16 +64,48 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     List<StatusStatisticsResponse> getComplaintCountByStatus();
 
     @Query("""
-SELECT c
-FROM Complaint c
-WHERE
-LOWER(c.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
-OR LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
-OR LOWER(c.location) LIKE LOWER(CONCAT('%', :keyword, '%'))
-OR LOWER(c.citizen.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))
-OR LOWER(c.citizen.email) LIKE LOWER(CONCAT('%', :keyword, '%'))
-ORDER BY c.createdAt DESC
-""")
+            SELECT c
+            FROM Complaint c
+            WHERE
+            LOWER(c.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(c.location) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(c.citizen.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(c.citizen.email) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            ORDER BY c.createdAt DESC
+            """)
     List<Complaint> searchComplaints(
             @Param("keyword") String keyword);
+
+    @Query("""
+            SELECT c.category, COUNT(c)
+            FROM Complaint c
+            GROUP BY c.category
+            ORDER BY COUNT(c) DESC
+            """)
+    List<Object[]> getCategoryAnalytics();
+
+    @Query("""
+            SELECT c.status, COUNT(c)
+            FROM Complaint c
+            GROUP BY c.status
+            ORDER BY COUNT(c) DESC
+            """)
+    List<Object[]> getStatusAnalytics();
+
+    @Query("""
+            SELECT c.location, COUNT(c)
+            FROM Complaint c
+            GROUP BY c.location
+            ORDER BY COUNT(c) DESC
+            """)
+    List<Object[]> getLocationAnalytics();
+
+    @Query("""
+            SELECT FUNCTION('DATE', c.createdAt), COUNT(c)
+            FROM Complaint c
+            GROUP BY FUNCTION('DATE', c.createdAt)
+            ORDER BY FUNCTION('DATE', c.createdAt) DESC
+            """)
+    List<Object[]> getDateAnalytics();
 }
