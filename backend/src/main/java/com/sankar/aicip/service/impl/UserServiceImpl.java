@@ -10,6 +10,7 @@ import com.sankar.aicip.entity.RefreshToken;
 import com.sankar.aicip.enums.UserRole;
 import com.sankar.aicip.exception.EmailAlreadyExistsException;
 import com.sankar.aicip.exception.InvalidCredentialsException;
+import com.sankar.aicip.exception.ResourceNotFoundException;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
 import com.sankar.aicip.service.RefreshTokenService;
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found."));
+                        new ResourceNotFoundException("User not found."));
 
         CurrentUserResponse response = new CurrentUserResponse();
 

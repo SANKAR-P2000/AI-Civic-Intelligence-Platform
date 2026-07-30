@@ -4,6 +4,7 @@ import com.sankar.aicip.dto.response.admin.AdminComplaintResponse;
 import com.sankar.aicip.dto.request.ComplaintStatusUpdateRequest;
 import com.sankar.aicip.entity.Complaint;
 import com.sankar.aicip.enums.ComplaintStatus;
+import com.sankar.aicip.exception.ResourceNotFoundException;
 import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.service.AdminComplaintService;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class AdminComplaintServiceImpl
         Complaint complaint = complaintRepository
                 .findById(complaintId)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Complaint not found."));
 
         return mapToResponse(complaint);
@@ -87,6 +88,7 @@ public class AdminComplaintServiceImpl
                 .map(this::mapToResponse)
                 .toList();
     }
+
     @Override
     @Transactional
     public AdminComplaintResponse updateComplaintStatus(
@@ -96,7 +98,7 @@ public class AdminComplaintServiceImpl
         Complaint complaint = complaintRepository
                 .findById(complaintId)
                 .orElseThrow(() ->
-                        new RuntimeException("Complaint not found."));
+                        new ResourceNotFoundException("Complaint not found."));
 
         complaint.setStatus(request.getStatus());
 

@@ -1,43 +1,29 @@
 package com.sankar.aicip.exception;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErrorResponse {
 
-    private int status;
-    private String message;
     private LocalDateTime timestamp;
 
-    public ErrorResponse() {
-    }
+    private int status;
 
-    public ErrorResponse(int status, String message, LocalDateTime timestamp) {
-        this.status = status;
-        this.message = message;
-        this.timestamp = timestamp;
-    }
+    private String error;
 
-    public int getStatus() {
-        return status;
-    }
+    private String message;
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    private String path;
 
-    public String getMessage() {
-        return message;
-    }
+    private Map<String, String> errors;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }

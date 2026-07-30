@@ -1,4 +1,5 @@
 package com.sankar.aicip.controller;
+
 import jakarta.validation.Valid;
 import com.sankar.aicip.dto.request.UserRegistrationRequest;
 import com.sankar.aicip.dto.response.UserResponse;
@@ -30,6 +31,7 @@ public class UserController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(
             @Valid @RequestBody LoginRequest request) {
@@ -38,11 +40,13 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/profile")
     public ResponseEntity<String> getProfile() {
 
         return ResponseEntity.ok("Authenticated User Profile");
     }
+
     @GetMapping("/me")
     public ResponseEntity<CurrentUserResponse> getCurrentUser(
             Authentication authentication) {

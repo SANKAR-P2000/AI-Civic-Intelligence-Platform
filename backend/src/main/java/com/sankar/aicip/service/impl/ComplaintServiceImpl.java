@@ -5,6 +5,7 @@ import com.sankar.aicip.dto.response.ComplaintResponse;
 import com.sankar.aicip.entity.Complaint;
 import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.ComplaintStatus;
+import com.sankar.aicip.exception.ResourceNotFoundException;
 import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.ComplaintService;
@@ -44,7 +45,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         User citizen = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found."));
+                        new ResourceNotFoundException("User not found."));
 
         Complaint complaint = new Complaint();
 
@@ -88,7 +89,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         User citizen = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found."));
+                        new ResourceNotFoundException("User not found."));
 
         return complaintRepository.findByCitizen(citizen)
                 .stream()
@@ -113,7 +114,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         Complaint complaint =
                 complaintRepository.findById(complaintId)
                         .orElseThrow(() ->
-                                new RuntimeException("Complaint not found."));
+                                new ResourceNotFoundException("Complaint not found."));
 
         complaint.setStatus(status);
 
@@ -143,7 +144,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() ->
-                        new RuntimeException("Complaint not found."));
+                        new ResourceNotFoundException("Complaint not found."));
 
         return mapToResponse(complaint);
     }

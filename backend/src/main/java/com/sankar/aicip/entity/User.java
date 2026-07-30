@@ -2,6 +2,7 @@ package com.sankar.aicip.entity;
 
 import com.sankar.aicip.enums.UserRole;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -89,6 +90,7 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

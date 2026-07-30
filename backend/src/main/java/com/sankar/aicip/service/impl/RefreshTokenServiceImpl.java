@@ -2,6 +2,7 @@ package com.sankar.aicip.service.impl;
 
 import com.sankar.aicip.entity.RefreshToken;
 import com.sankar.aicip.entity.User;
+import com.sankar.aicip.exception.ResourceNotFoundException;
 import com.sankar.aicip.repository.RefreshTokenRepository;
 import com.sankar.aicip.service.RefreshTokenService;
 import org.springframework.data.jpa.repository.Modifying;
@@ -55,7 +56,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = refreshTokenRepository
                 .findByToken(token)
                 .orElseThrow(() ->
-                        new RuntimeException("Refresh token not found."));
+                        new ResourceNotFoundException("Refresh token not found."));
 
         if (refreshToken.isRevoked()) {
             throw new RuntimeException("Refresh token has been revoked.");
@@ -105,7 +106,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = refreshTokenRepository
                 .findByToken(refreshTokenValue)
                 .orElseThrow(() ->
-                        new RuntimeException("Refresh token not found."));
+                        new ResourceNotFoundException("Refresh token not found."));
 
         refreshTokenRepository.delete(refreshToken);
     }
