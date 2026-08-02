@@ -14,7 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(
+        name = "User Management",
+        description = "APIs for user registration, authentication, and profile management"
+)
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -28,6 +36,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Register a new user",
+            description = "Registers a new citizen account."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Validation failed"),
+            @ApiResponse(responseCode = "409", description = "Email already exists")
+    })
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(
             @Valid @RequestBody UserRegistrationRequest request) {
@@ -41,6 +58,14 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "User Login",
+            description = "Authenticates the user and returns JWT access and refresh tokens."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Login successful"),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(
             @Valid @RequestBody LoginRequest request) {
@@ -60,6 +85,14 @@ public class UserController {
         return ResponseEntity.ok("Authenticated User Profile");
     }
 
+    @Operation(
+            summary = "Get Current User",
+            description = "Returns details of the authenticated user."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "User details returned successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @GetMapping("/me")
     public ResponseEntity<CurrentUserResponse> getCurrentUser(
             Authentication authentication) {

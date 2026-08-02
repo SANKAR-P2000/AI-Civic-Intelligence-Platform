@@ -2,15 +2,52 @@ package com.sankar.aicip.dto.response;
 
 import java.time.LocalDateTime;
 
-public class LoginResponse {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(
+        name = "Login Response",
+        description = "Response returned after successful user authentication."
+)
+public class LoginResponse {
+    @Schema(
+            description = "Unique user identifier",
+            example = "1"
+    )
     private Long id;
+    @Schema(
+            description = "Citizen full name",
+            example = "Sankar P"
+    )
     private String fullName;
+    @Schema(
+            description = "Registered email address",
+            example = "sankar@example.com"
+    )
     private String email;
+    @Schema(
+            description = "Registered mobile number",
+            example = "9876543210"
+    )
     private String phoneNumber;
+    @Schema(
+            description = "Authenticated user role",
+            example = "CITIZEN"
+    )
     private String role;
+    @Schema(
+            description = "User login timestamp",
+            example = "2026-08-02T10:45:30"
+    )
     private LocalDateTime loginTime;
+    @Schema(
+            description = "JWT access token",
+            example = "eyJhbGciOiJIUzI1NiJ9..."
+    )
     private String token;
+    @Schema(
+            description = "JWT refresh token",
+            example = "eyJhbGciOiJIUzI1NiJ9..."
+    )
     private String refreshToken;
 
     public LoginResponse() {

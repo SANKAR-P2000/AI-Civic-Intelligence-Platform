@@ -2,13 +2,42 @@ package com.sankar.aicip.dto.response;
 
 import java.time.LocalDateTime;
 
-public class CurrentUserResponse {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(
+        name = "Current User Response",
+        description = "Response containing details of the authenticated user."
+)
+public class CurrentUserResponse {
+    @Schema(
+            description = "Unique user identifier",
+            example = "1"
+    )
     private Long id;
+    @Schema(
+            description = "Citizen full name",
+            example = "Sankar P"
+    )
     private String fullName;
+    @Schema(
+            description = "Registered email address",
+            example = "sankar@example.com"
+    )
     private String email;
+    @Schema(
+            description = "Registered mobile number",
+            example = "9876543210"
+    )
     private String phoneNumber;
+    @Schema(
+            description = "Authenticated user role",
+            example = "CITIZEN"
+    )
     private String role;
+    @Schema(
+            description = "User account creation timestamp",
+            example = "2026-08-02T10:30:45"
+    )
     private LocalDateTime createdAt;
 
     public CurrentUserResponse() {

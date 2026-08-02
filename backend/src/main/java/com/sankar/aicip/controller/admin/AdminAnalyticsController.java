@@ -7,9 +7,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(
+        name = "Admin Analytics",
+        description = "Administrative analytics APIs for complaint statistics"
+)
 @RestController
 @RequestMapping("/api/admin/analytics")
 @RequiredArgsConstructor
@@ -20,6 +28,14 @@ public class AdminAnalyticsController {
             LoggerFactory.getLogger(AdminAnalyticsController.class);
     private final AdminAnalyticsService adminAnalyticsService;
 
+    @Operation(
+            summary = "Category Analytics",
+            description = "Returns complaint statistics grouped by category."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Category analytics returned successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/category")
     public List<AnalyticsResponse> getCategoryAnalytics() {
 
@@ -33,6 +49,14 @@ public class AdminAnalyticsController {
         return response;
     }
 
+    @Operation(
+            summary = "Status Analytics",
+            description = "Returns complaint statistics grouped by status."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Status analytics returned successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/status")
     public List<AnalyticsResponse> getStatusAnalytics() {
 
@@ -46,6 +70,14 @@ public class AdminAnalyticsController {
         return response;
     }
 
+    @Operation(
+            summary = "Location Analytics",
+            description = "Returns complaint statistics grouped by location."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Location analytics returned successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/location")
     public List<AnalyticsResponse> getLocationAnalytics() {
 
@@ -59,6 +91,14 @@ public class AdminAnalyticsController {
         return response;
     }
 
+    @Operation(
+            summary = "Date Analytics",
+            description = "Returns complaint statistics grouped by complaint creation date."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Date analytics returned successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/date")
     public List<AnalyticsResponse> getDateAnalytics() {
 

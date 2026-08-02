@@ -10,9 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(
+        name = "Admin Complaint Management",
+        description = "Administrative APIs for managing complaints"
+)
 @RestController
 @RequestMapping("/api/admin")
 @PreAuthorize("hasRole('ADMIN')")
@@ -28,6 +37,14 @@ public class AdminComplaintController {
         this.adminComplaintService = adminComplaintService;
     }
 
+    @Operation(
+            summary = "Get All Complaints",
+            description = "Returns every complaint in the system."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Complaints retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/complaints")
     public ResponseEntity<List<AdminComplaintResponse>>
     getAllComplaints() {
@@ -43,9 +60,19 @@ public class AdminComplaintController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Get Complaint By ID",
+            description = "Returns a complaint using its unique ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Complaint found"),
+            @ApiResponse(responseCode = "404", description = "Complaint not found")
+    })
     @GetMapping("/complaints/{id}")
     public ResponseEntity<AdminComplaintResponse>
     getComplaintById(
+
+            @Parameter(description = "Complaint ID")
             @PathVariable Long id) {
 
         logger.info("Admin requested complaint ID: {}",
@@ -60,9 +87,18 @@ public class AdminComplaintController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Filter Complaints By Status",
+            description = "Returns complaints filtered by complaint status."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Complaints returned successfully")
+    })
     @GetMapping("/complaints/status/{status}")
     public ResponseEntity<List<AdminComplaintResponse>>
     getComplaintsByStatus(
+
+            @Parameter(description = "Complaint Status")
             @PathVariable ComplaintStatus status) {
 
         logger.info("Fetching complaints with status {}",
@@ -77,9 +113,18 @@ public class AdminComplaintController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Search Complaints",
+            description = "Search complaints using a keyword."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Search completed successfully")
+    })
     @GetMapping("/complaints/search")
     public ResponseEntity<List<AdminComplaintResponse>>
     searchComplaints(
+
+            @Parameter(description = "Search keyword")
             @RequestParam String keyword) {
 
         logger.info("Searching complaints using keyword: {}",
@@ -94,11 +139,23 @@ public class AdminComplaintController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Update Complaint Status",
+            description = "Updates the status of an existing complaint."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Complaint updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Complaint not found")
+    })
     @PutMapping("/complaints/{complaintId}/status")
     public ResponseEntity<AdminComplaintResponse>
     updateComplaintStatus(
+
+            @Parameter(description = "Complaint ID")
             @PathVariable Long complaintId,
-            @Valid @RequestBody ComplaintStatusUpdateRequest request) {
+
+            @Valid
+            @RequestBody ComplaintStatusUpdateRequest request) {
 
         logger.info("Updating complaint {} to status {}",
                 complaintId,

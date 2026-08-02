@@ -3,19 +3,44 @@ package com.sankar.aicip.dto.response;
 import com.sankar.aicip.enums.UserRole;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(
+        name = "User Response",
+        description = "Response returned after successful user registration or profile retrieval."
+)
 public class UserResponse {
+    @Schema(
+            description = "Unique user identifier",
+            example = "1"
+    )
 
     private Long id;
+    @Schema(
+            description = "Citizen full name",
+            example = "Sankar P"
+    )
 
     private String fullName;
-
+    @Schema(
+            description = "Registered email address",
+            example = "sankar@example.com"
+    )
     private String email;
-
+    @Schema(
+            description = "Registered mobile number",
+            example = "9876543210"
+    )
     private String phoneNumber;
-
+    @Schema(
+            description = "User role",
+            example = "CITIZEN"
+    )
     private UserRole role;
-
+    @Schema(
+            description = "User account creation timestamp",
+            example = "2026-08-02T10:30:45"
+    )
     private LocalDateTime createdAt;
 
     public UserResponse() {
