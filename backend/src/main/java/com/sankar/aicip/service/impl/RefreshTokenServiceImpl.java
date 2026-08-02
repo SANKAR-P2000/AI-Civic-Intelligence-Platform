@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sankar.aicip.dto.response.RefreshTokenResponse;
 import com.sankar.aicip.security.jwt.JwtService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
+    private static final Logger logger =
+            LoggerFactory.getLogger(RefreshTokenServiceImpl.class);
 
     private static final long REFRESH_TOKEN_VALIDITY_DAYS = 7;
 
@@ -34,6 +38,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken createRefreshToken(User user) {
+        logger.info("Creating refresh token for user: {}",
+                user.getEmail());
 
         RefreshToken refreshToken = new RefreshToken();
 
@@ -47,11 +53,18 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         refreshToken.setUser(user);
 
-        return refreshTokenRepository.save(refreshToken);
+        RefreshToken savedRefreshToken =
+                refreshTokenRepository.save(refreshToken);
+
+        logger.info("Refresh token created successfully for user: {}",
+                user.getEmail());
+
+        return savedRefreshToken;
     }
 
     @Override
     public RefreshToken verifyRefreshToken(String token) {
+        logger.info("Verifying refresh token.");
 
         RefreshToken refreshToken = refreshTokenRepository
                 .findByToken(token)
@@ -65,7 +78,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         if (refreshToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token has expired.");
         }
-
+        logger.info("Refresh token verified successfully.");
         return refreshToken;
     }
 
@@ -77,6 +90,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshTokenResponse refreshAccessToken(String refreshTokenValue) {
+        logger.info("Refreshing access token.");
 
         RefreshToken refreshToken =
                 verifyRefreshToken(refreshTokenValue);
@@ -92,6 +106,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         String accessToken =
                 jwtService.generateToken(userDetails);
+        logger.info("Access token refreshed successfully for user: {}",
+                user.getEmail());
 
         return new RefreshTokenResponse(
                 accessToken,
@@ -102,12 +118,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     @Transactional
     public void logout(String refreshTokenValue) {
+        logger.info("Logout requested.");
 
         RefreshToken refreshToken = refreshTokenRepository
                 .findByToken(refreshTokenValue)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Refresh token not found."));
-
+        logger.info("Deleting refresh token.");
         refreshTokenRepository.delete(refreshToken);
+        logger.info("User logged out successfully.");
     }
 }

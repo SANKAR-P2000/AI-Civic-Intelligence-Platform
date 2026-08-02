@@ -12,10 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -26,17 +31,25 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(
             @Valid @RequestBody UserRegistrationRequest request) {
+        logger.info("Registration request received for email: {}",
+                request.getEmail());
 
         UserResponse response = userService.registerUser(request);
 
+        logger.info("User registered successfully: {}",
+                response.getEmail());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(
             @Valid @RequestBody LoginRequest request) {
-
+        logger.info("Login request received for email: {}",
+                request.getEmail());
         LoginResponse response = userService.loginUser(request);
+
+        logger.info("User logged in successfully: {}",
+                response.getEmail());
 
         return ResponseEntity.ok(response);
     }
@@ -51,11 +64,17 @@ public class UserController {
     public ResponseEntity<CurrentUserResponse> getCurrentUser(
             Authentication authentication) {
 
+        logger.info("Fetching current user details for: {}",
+                authentication.getName());
+
         String email = authentication.getName();
 
         CurrentUserResponse response =
                 userService.getCurrentUser(email);
 
+        logger.info("Current user details returned successfully.");
+
         return ResponseEntity.ok(response);
     }
+
 }

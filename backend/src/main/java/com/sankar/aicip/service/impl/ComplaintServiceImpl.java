@@ -13,12 +13,17 @@ import com.sankar.aicip.service.email.EmailService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(ComplaintServiceImpl.class);
 
     private final ComplaintRepository complaintRepository;
     private final UserRepository userRepository;
@@ -42,6 +47,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
+        logger.info("Creating complaint for user: {}", email);
 
         User citizen = userRepository.findByEmail(email)
                 .orElseThrow(() ->
@@ -59,6 +65,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint savedComplaint =
                 complaintRepository.save(complaint);
+        logger.info("Complaint created successfully. Complaint ID: {}",
+                savedComplaint.getId());
         try {
 
             emailService.sendComplaintSubmittedEmail(
@@ -71,8 +79,10 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         } catch (Exception ex) {
 
-            System.err.println(
-                    "Complaint created successfully, but email notification failed."
+            logger.warn(
+                    "Complaint {} created, but email notification failed.",
+                    savedComplaint.getId(),
+                    ex
             );
         }
 
@@ -87,29 +97,47 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         String email = authentication.getName();
 
+        logger.info("Fetching complaints for user: {}", email);
+
         User citizen = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found."));
 
-        return complaintRepository.findByCitizen(citizen)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        List<ComplaintResponse> complaints =
+                complaintRepository.findByCitizen(citizen)
+                        .stream()
+                        .map(this::mapToResponse)
+                        .collect(Collectors.toList());
+
+        logger.info("Returned {} complaints.",
+                complaints.size());
+
+        return complaints;
     }
 
     @Override
     public List<ComplaintResponse> getAllComplaints() {
+        logger.info("Fetching all complaints.");
 
-        return complaintRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        List<ComplaintResponse> complaints =
+                complaintRepository.findAll()
+                        .stream()
+                        .map(this::mapToResponse)
+                        .collect(Collectors.toList());
+
+        logger.info("Returned {} complaints.",
+                complaints.size());
+
+        return complaints;
     }
 
     @Override
     public ComplaintResponse updateComplaintStatus(
             Long complaintId,
             ComplaintStatus status) {
+        logger.info("Updating complaint {} to status {}",
+                complaintId,
+                status);
 
         Complaint complaint =
                 complaintRepository.findById(complaintId)
@@ -120,6 +148,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         Complaint updatedComplaint =
                 complaintRepository.save(complaint);
+        logger.info("Complaint {} updated successfully.",
+                complaintId);
         try {
 
             emailService.sendComplaintStatusUpdatedEmail(
@@ -131,8 +161,10 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         } catch (Exception ex) {
 
-            System.err.println(
-                    "Complaint updated successfully, but email notification failed."
+            logger.warn(
+                    "Complaint {} updated, but email notification failed.",
+                    complaintId,
+                    ex
             );
         }
 
@@ -141,11 +173,13 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public ComplaintResponse trackComplaint(Long complaintId) {
-
+        logger.info("Tracking complaint {}",
+                complaintId);
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Complaint not found."));
-
+        logger.info("Complaint {} returned successfully.",
+                complaintId);
         return mapToResponse(complaint);
     }
 

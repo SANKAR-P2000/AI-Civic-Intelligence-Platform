@@ -9,12 +9,16 @@ import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.service.AdminComplaintService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class AdminComplaintServiceImpl
         implements AdminComplaintService {
+    private static final Logger logger =
+            LoggerFactory.getLogger(AdminComplaintServiceImpl.class);
 
     private final ComplaintRepository complaintRepository;
 
@@ -47,22 +51,34 @@ public class AdminComplaintServiceImpl
     @Override
     public List<AdminComplaintResponse> getAllComplaints() {
 
-        return complaintRepository
-                .findAllByOrderByCreatedAtDesc()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        logger.info("Fetching all complaints for admin.");
+
+        List<AdminComplaintResponse> complaints =
+                complaintRepository
+                        .findAllByOrderByCreatedAtDesc()
+                        .stream()
+                        .map(this::mapToResponse)
+                        .toList();
+
+        logger.info("Returned {} complaints.",
+                complaints.size());
+
+        return complaints;
     }
 
     @Override
-    public AdminComplaintResponse getComplaintById(
-            Long complaintId) {
+    public AdminComplaintResponse getComplaintById(Long complaintId) {
+
+        logger.info("Fetching complaint {}",
+                complaintId);
 
         Complaint complaint = complaintRepository
                 .findById(complaintId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Complaint not found."));
+                        new ResourceNotFoundException("Complaint not found."));
+
+        logger.info("Complaint {} returned successfully.",
+                complaintId);
 
         return mapToResponse(complaint);
     }
@@ -71,22 +87,40 @@ public class AdminComplaintServiceImpl
     public List<AdminComplaintResponse> getComplaintsByStatus(
             ComplaintStatus status) {
 
-        return complaintRepository
-                .findByStatusOrderByCreatedAtDesc(status)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        logger.info("Fetching complaints with status {}",
+                status);
+
+        List<AdminComplaintResponse> complaints =
+                complaintRepository
+                        .findByStatusOrderByCreatedAtDesc(status)
+                        .stream()
+                        .map(this::mapToResponse)
+                        .toList();
+
+        logger.info("Returned {} complaints.",
+                complaints.size());
+
+        return complaints;
     }
 
     @Override
     public List<AdminComplaintResponse> searchComplaints(
             String keyword) {
 
-        return complaintRepository
-                .searchComplaints(keyword)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+        logger.info("Searching complaints using keyword '{}'",
+                keyword);
+
+        List<AdminComplaintResponse> complaints =
+                complaintRepository
+                        .searchComplaints(keyword)
+                        .stream()
+                        .map(this::mapToResponse)
+                        .toList();
+
+        logger.info("Search returned {} complaints.",
+                complaints.size());
+
+        return complaints;
     }
 
     @Override
@@ -94,6 +128,10 @@ public class AdminComplaintServiceImpl
     public AdminComplaintResponse updateComplaintStatus(
             Long complaintId,
             ComplaintStatusUpdateRequest request) {
+
+        logger.info("Updating complaint {} to status {}",
+                complaintId,
+                request.getStatus());
 
         Complaint complaint = complaintRepository
                 .findById(complaintId)
@@ -105,6 +143,10 @@ public class AdminComplaintServiceImpl
         Complaint updatedComplaint =
                 complaintRepository.save(complaint);
 
+        logger.info("Complaint {} updated successfully.",
+                complaintId);
+
         return mapToResponse(updatedComplaint);
     }
+
 }

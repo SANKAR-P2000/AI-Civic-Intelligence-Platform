@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminComplaintController {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(AdminComplaintController.class);
     private final AdminComplaintService adminComplaintService;
 
     public AdminComplaintController(
@@ -28,9 +32,15 @@ public class AdminComplaintController {
     public ResponseEntity<List<AdminComplaintResponse>>
     getAllComplaints() {
 
-        return ResponseEntity.ok(
-                adminComplaintService.getAllComplaints()
-        );
+        logger.info("Admin requested all complaints.");
+
+        List<AdminComplaintResponse> response =
+                adminComplaintService.getAllComplaints();
+
+        logger.info("Returned {} complaints.",
+                response.size());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/complaints/{id}")
@@ -38,9 +48,16 @@ public class AdminComplaintController {
     getComplaintById(
             @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                adminComplaintService.getComplaintById(id)
-        );
+        logger.info("Admin requested complaint ID: {}",
+                id);
+
+        AdminComplaintResponse response =
+                adminComplaintService.getComplaintById(id);
+
+        logger.info("Complaint {} returned successfully.",
+                id);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/complaints/status/{status}")
@@ -48,10 +65,16 @@ public class AdminComplaintController {
     getComplaintsByStatus(
             @PathVariable ComplaintStatus status) {
 
-        return ResponseEntity.ok(
-                adminComplaintService
-                        .getComplaintsByStatus(status)
-        );
+        logger.info("Fetching complaints with status {}",
+                status);
+
+        List<AdminComplaintResponse> response =
+                adminComplaintService.getComplaintsByStatus(status);
+
+        logger.info("Returned {} complaints.",
+                response.size());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/complaints/search")
@@ -59,21 +82,38 @@ public class AdminComplaintController {
     searchComplaints(
             @RequestParam String keyword) {
 
-        return ResponseEntity.ok(
-                adminComplaintService.searchComplaints(keyword)
-        );
+        logger.info("Searching complaints using keyword: {}",
+                keyword);
+
+        List<AdminComplaintResponse> response =
+                adminComplaintService.searchComplaints(keyword);
+
+        logger.info("Search returned {} complaints.",
+                response.size());
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/complaints/{complaintId}/status")
-    public ResponseEntity<AdminComplaintResponse> updateComplaintStatus(
+    public ResponseEntity<AdminComplaintResponse>
+    updateComplaintStatus(
             @PathVariable Long complaintId,
             @Valid @RequestBody ComplaintStatusUpdateRequest request) {
 
-        return ResponseEntity.ok(
+        logger.info("Updating complaint {} to status {}",
+                complaintId,
+                request.getStatus());
+
+        AdminComplaintResponse response =
                 adminComplaintService.updateComplaintStatus(
                         complaintId,
                         request
-                )
-        );
+                );
+
+        logger.info("Complaint {} updated successfully.",
+                complaintId);
+
+        return ResponseEntity.ok(response);
     }
+
 }

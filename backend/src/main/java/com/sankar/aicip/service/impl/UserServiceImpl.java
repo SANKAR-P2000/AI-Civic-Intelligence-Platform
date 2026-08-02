@@ -18,11 +18,16 @@ import com.sankar.aicip.security.jwt.JwtService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,6 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registerUser(UserRegistrationRequest request) {
+        logger.info("Registering new user with email: {}",
+                request.getEmail());
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
@@ -56,6 +63,9 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
+        logger.info("User registered successfully. User ID: {}, Email: {}",
+                savedUser.getId(),
+                savedUser.getEmail());
         UserResponse response = new UserResponse();
 
         response.setId(savedUser.getId());
@@ -70,6 +80,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse loginUser(LoginRequest request) {
+        logger.info("Login attempt for email: {}",
+                request.getEmail());
 
         User user = userRepository.findByEmail(request.getEmail())
 
@@ -82,6 +94,8 @@ public class UserServiceImpl implements UserService {
 
             throw new InvalidCredentialsException("Invalid email or password.");
         }
+
+
         UserDetails userDetails =
                 org.springframework.security.core.userdetails.User
                         .withUsername(user.getEmail())
@@ -102,12 +116,16 @@ public class UserServiceImpl implements UserService {
         response.setLoginTime(LocalDateTime.now());
         response.setToken(token);
         response.setRefreshToken(refreshToken.getToken());
+        logger.info("User logged in successfully. User ID: {}, Email: {}",
+                user.getId(),
+                user.getEmail());
         return response;
     }
 
     @Override
     public CurrentUserResponse getCurrentUser(String email) {
-
+        logger.info("Fetching profile for user: {}",
+                email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found."));
@@ -120,7 +138,8 @@ public class UserServiceImpl implements UserService {
         response.setPhoneNumber(user.getPhoneNumber());
         response.setRole(user.getRole().name());
         response.setCreatedAt(user.getCreatedAt());
-
+        logger.info("Profile returned successfully for user: {}",
+                user.getEmail());
         return response;
     }
 }

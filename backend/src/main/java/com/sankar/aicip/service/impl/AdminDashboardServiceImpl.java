@@ -5,9 +5,13 @@ import com.sankar.aicip.enums.ComplaintStatus;
 import com.sankar.aicip.repository.ComplaintRepository;
 import com.sankar.aicip.service.AdminDashboardService;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AdminDashboardServiceImpl implements AdminDashboardService {
+    private static final Logger logger =
+            LoggerFactory.getLogger(AdminDashboardServiceImpl.class);
 
     private final ComplaintRepository complaintRepository;
 
@@ -20,31 +24,39 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
     @Override
     public DashboardStatisticsResponse getDashboardStatistics() {
 
-        return DashboardStatisticsResponse.builder()
+        logger.info("Generating dashboard statistics.");
 
-                .totalComplaints(
-                        complaintRepository.count())
+        DashboardStatisticsResponse response =
+                DashboardStatisticsResponse.builder()
 
-                .pending(
-                        complaintRepository.countByStatus(
-                                ComplaintStatus.PENDING))
+                        .totalComplaints(
+                                complaintRepository.count())
 
-                .underReview(
-                        complaintRepository.countByStatus(
-                                ComplaintStatus.UNDER_REVIEW))
+                        .pending(
+                                complaintRepository.countByStatus(
+                                        ComplaintStatus.PENDING))
 
-                .inProgress(
-                        complaintRepository.countByStatus(
-                                ComplaintStatus.IN_PROGRESS))
+                        .underReview(
+                                complaintRepository.countByStatus(
+                                        ComplaintStatus.UNDER_REVIEW))
 
-                .resolved(
-                        complaintRepository.countByStatus(
-                                ComplaintStatus.RESOLVED))
+                        .inProgress(
+                                complaintRepository.countByStatus(
+                                        ComplaintStatus.IN_PROGRESS))
 
-                .rejected(
-                        complaintRepository.countByStatus(
-                                ComplaintStatus.REJECTED))
+                        .resolved(
+                                complaintRepository.countByStatus(
+                                        ComplaintStatus.RESOLVED))
 
-                .build();
+                        .rejected(
+                                complaintRepository.countByStatus(
+                                        ComplaintStatus.REJECTED))
+
+                        .build();
+
+        logger.info("Dashboard statistics generated successfully.");
+
+        return response;
     }
+
 }
