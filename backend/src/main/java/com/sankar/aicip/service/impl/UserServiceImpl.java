@@ -15,6 +15,7 @@ import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
 import com.sankar.aicip.service.RefreshTokenService;
 import com.sankar.aicip.security.jwt.JwtService;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,21 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService, RefreshTokenService refreshTokenService) {
+            JwtService jwtService,
+            AuthenticationManager authenticationManager,
+            RefreshTokenService refreshTokenService
+    ) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
     }
 
