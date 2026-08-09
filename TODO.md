@@ -53,3 +53,11 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Frontend `npm run build` — passed
 - [x] Frontend ESLint — passed
 - [x] Backend `mvnw compile` — passed
+
+### 7. Phase 29.7 – "Network Error" / Port 8080 Conflict Fix - ✅
+
+- [x] Diagnosed stale `java.exe` (PID 21068) holding port 8080
+- [x] Terminated stale process with `taskkill /PID 21068 /F`
+- [x] Restarted backend with latest code via `mvnw spring-boot:run -Dspring-boot.run.profiles=local` (PID 7192)
+- [x] Verified frontend `:5173 → 200`, backend `:8080 → 401` (bad creds), proxy chain works
+- [x] Document `docs/262_Phase_29.7_Network_Error_Port_Conflict_Fix.md`
