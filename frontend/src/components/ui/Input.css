@@ -117,3 +117,12 @@
     padding-right: var(--space-3);
   }
 }
+.aicip-field__input {
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
+}
+
+.aicip-field__input::placeholder {
+  color: var(--theme-text-muted);
+}

@@ -167,3 +167,8 @@
     font-size: var(--font-size-md);
   }
 }
+.aicip-button--secondary {
+  background: var(--theme-surface-strong);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-primary);
+}

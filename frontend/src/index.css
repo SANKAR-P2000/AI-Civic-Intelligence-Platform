@@ -428,3 +428,88 @@ select {
     min-height: 44px;
   }
 }
+/* ========================================
+   AICIP NIGHT THEME
+   ======================================== */
+
+:root,
+html[data-theme="night"] {
+  --theme-bg: #080b12;
+  --theme-bg-secondary: #111522;
+
+  --theme-surface: rgba(255, 255, 255, 0.08);
+  --theme-surface-strong: rgba(255, 255, 255, 0.12);
+
+  --theme-border: rgba(255, 255, 255, 0.16);
+
+  --theme-text-primary: #f8fafc;
+  --theme-text-secondary: #a8b1c2;
+  --theme-text-muted: #7f899c;
+
+  --theme-accent: #7c5cff;
+  --theme-accent-secondary: #3b9cff;
+
+  --theme-danger: #ff4d5a;
+
+  --theme-shadow: rgba(0, 0, 0, 0.35);
+}
+/* ========================================
+   AICIP DAYLIGHT THEME
+   ======================================== */
+
+html[data-theme="day"] {
+  --theme-bg: #eef3f9;
+  --theme-bg-secondary: #e2e9f3;
+
+  --theme-surface: rgba(255, 255, 255, 0.62);
+  --theme-surface-strong: rgba(255, 255, 255, 0.82);
+
+  --theme-border: rgba(30, 41, 59, 0.14);
+
+  --theme-text-primary: #172033;
+  --theme-text-secondary: #4b5870;
+  --theme-text-muted: #718096;
+
+  --theme-accent: #6652e8;
+  --theme-accent-secondary: #2684e8;
+
+  --theme-danger: #dc3545;
+
+  --theme-shadow: rgba(30, 41, 59, 0.16);
+}
+html,
+body {
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(102, 82, 232, 0.12),
+      transparent 35%
+    ),
+    var(--theme-bg);
+
+  color: var(--theme-text-primary);
+
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+body,
+button,
+input,
+textarea,
+select,
+.glass-card {
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

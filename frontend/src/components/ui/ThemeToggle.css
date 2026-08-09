@@ -1,0 +1,31 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 10px 16px;
+
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+
+  background: var(--theme-surface);
+  color: var(--theme-text-primary);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 10px 25px var(--theme-shadow);
+
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--theme-surface-strong);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--theme-accent);
+  outline-offset: 3px;
+}

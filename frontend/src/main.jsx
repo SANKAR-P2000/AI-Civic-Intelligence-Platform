@@ -10,3 +10,14 @@ createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
   </StrictMode>,
 );
+import "./index.css";
+import App from "./App.jsx";
+import { applyTheme, getInitialTheme } from "./utils/theme.js";
+
+applyTheme(getInitialTheme());
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
