@@ -149,3 +149,21 @@
     transform: rotate(360deg);
   }
 }
+@media (max-width: 768px) {
+  .aicip-button--lg {
+    min-height: 48px;
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+  }
+}
+
+@media (max-width: 425px) {
+  .aicip-button {
+    max-width: 100%;
+  }
+
+  .aicip-button--lg {
+    min-height: 46px;
+    font-size: var(--font-size-md);
+  }
+}

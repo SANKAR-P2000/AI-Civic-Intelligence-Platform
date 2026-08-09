@@ -4,3 +4,50 @@
   gap: var(--space-5);
   width: min(100%, 560px);
 }
+.app-shell {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.app-content {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .app-shell {
+    padding: 20px;
+  }
+}
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 16px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+   ======================================== */
+
+@media (max-width: 425px) {
+  .app-shell {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-shell {
+    padding: 10px;
+  }
+}

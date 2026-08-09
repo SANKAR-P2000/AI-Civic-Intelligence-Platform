@@ -99,3 +99,21 @@
   font-size: var(--font-size-sm);
   line-height: 1.5;
 }
+@media (max-width: 768px) {
+  .aicip-field__input {
+    min-height: 46px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .aicip-field {
+    gap: var(--space-2);
+  }
+
+  .aicip-field__input {
+    min-height: 46px;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+}

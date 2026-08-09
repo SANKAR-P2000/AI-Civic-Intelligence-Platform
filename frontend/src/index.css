@@ -353,3 +353,78 @@ ol {
     font-size: var(--font-size-xl);
   }
 }
+/* ========================================
+   AICIP RESPONSIVE FOUNDATION
+   ======================================== */
+
+html {
+  width: 100%;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY
+   ======================================== */
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   TOUCH TARGET FOUNDATION
+   ======================================== */
+
+@media (max-width: 768px) {
+  button,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+  }
+}
