@@ -1,13 +1,6 @@
-/* AICIP application-level styles will be added
-   in the component UI phases. */
-.app-shell {
-  min-height: 100vh;
+.form-demo {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8);
-}
-
-.app-content {
-  width: min(100%, 420px);
+  flex-direction: column;
+  gap: var(--space-5);
+  width: min(100%, 560px);
 }
