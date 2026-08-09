@@ -12,9 +12,15 @@ const NAV_LINKS = [
   { to: "/about", label: "About" },
 ];
 
+const ADMIN_LINKS = [
+  { to: "/dashboard", label: "Dashboard" },
+  { to: "/admin/complaints", label: "Manage Complaints" },
+  { to: "/admin/analytics", label: "Analytics" },
+];
+
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
   const closeMenu = () => setMenuOpen(false);
@@ -53,6 +59,22 @@ function Navbar() {
               {link.label}
             </NavLink>
           ))}
+
+          {isAdmin &&
+            ADMIN_LINKS.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `aicip-navbar__link aicip-navbar__link--admin ${
+                    isActive ? "aicip-navbar__link--active" : ""
+                  }`
+                }
+                onClick={closeMenu}
+              >
+                {link.label}
+              </NavLink>
+            ))}
 
           <div className="aicip-navbar__mobile-actions">
             {isAuthenticated ? (

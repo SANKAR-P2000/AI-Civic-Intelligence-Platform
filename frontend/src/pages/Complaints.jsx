@@ -7,6 +7,7 @@ import SectionHeading from "../components/ui/SectionHeading.jsx";
 import Pill from "../components/ui/Pill.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import complaintService from "../services/complaints.js";
+import uploadComplaintImage from "../services/upload.js";
 import "./Complaints.css";
 
 const CATEGORIES = [
@@ -42,6 +43,8 @@ function Complaints() {
 
   // Submit state
   const [form, setForm] = useState(EMPTY_FORM);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(null);
@@ -82,6 +85,17 @@ function Complaints() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setImageFile(null);
+      setImagePreview("");
+      return;
+    }
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError("");
@@ -94,12 +108,27 @@ function Complaints() {
 
     setSubmitLoading(true);
     try {
+      let imageUrl = null;
+
+      // Upload image first if one was selected
+      if (imageFile) {
+        try {
+          imageUrl = await uploadComplaintImage(imageFile);
+        } catch (uploadErr) {
+          setSubmitError(uploadErr.message || "Image upload failed.");
+          setSubmitLoading(false);
+          return;
+        }
+      }
+
       const data = await complaintService.createComplaint({
         ...form,
-        imageUrl: null,
+        imageUrl,
       });
       setSubmitSuccess(data);
       setForm(EMPTY_FORM);
+      setImageFile(null);
+      setImagePreview("");
     } catch (err) {
       setSubmitError(err.message || "Failed to submit complaint.");
     } finally {
@@ -244,6 +273,28 @@ function Complaints() {
                 onChange={handleChange}
                 required
               />
+
+              <div className="aicip-field">
+                <label className="aicip-field__label" htmlFor="image">
+                  Photo (optional)
+                </label>
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  className="aicip-field__input complaints__file"
+                  onChange={handleImageChange}
+                />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Complaint preview"
+                    className="complaints__preview"
+                  />
+                )}
+                <p className="aicip-field__helper">JPG or PNG, up to 5 MB.</p>
+              </div>
 
               {submitError && (
                 <p className="complaints__error">{submitError}</p>

@@ -9,6 +9,8 @@ import About from "../pages/About.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
+import AdminComplaints from "../pages/AdminComplaints.jsx";
+import AdminAnalytics from "../pages/AdminAnalytics.jsx";
 import NotFound from "../pages/NotFound.jsx";
 
 const router = createBrowserRouter([
@@ -27,6 +29,22 @@ const router = createBrowserRouter([
         Component: () => (
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin/complaints",
+        Component: () => (
+          <ProtectedRoute roles={["ADMIN"]}>
+            <AdminComplaints />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin/analytics",
+        Component: () => (
+          <ProtectedRoute roles={["ADMIN"]}>
+            <AdminAnalytics />
           </ProtectedRoute>
         ),
       },

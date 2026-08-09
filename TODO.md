@@ -29,10 +29,27 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Run `mvn test-compile` (backend) — passed
 
 ### 4. Documentation (docs/) - ✅
+
 - [x] `258_Phase_29.5_Backend_Frontend_Integration.md`
 - [x] `259_Phase_29.5.1_Integration_Bug_Fixes.md`
 - [x] `260_Phase_29.5.2_System_Integration_Architecture.md`
 - [x] Update `TODO.md`
 
 ### 5. Git Commit - ✅
+
 - [x] Commit with conventional message: `feat: integrate frontend, backend, and database; fix integration bugs`
+
+### 6. Phase 29.6 – Admin UI, File Upload & Bug Fixes - ✅
+
+- [x] Add `services/upload.js` — multipart image upload with JWT
+- [x] Add `services/analytics.js` — admin analytics client
+- [x] Add `uploadComplaintImage` to complaint submission form (photo + preview)
+- [x] Add `AdminComplaints.jsx` — search, filter, inline status update
+- [x] Add `AdminAnalytics.jsx` — CSS bar charts by category/status/location
+- [x] Register `/admin/complaints` and `/admin/analytics` routes (ADMIN role)
+- [x] Show admin nav links only for ADMIN role
+- [x] Fix `ComplaintServiceImpl` to return relative `/uploads/...` image URLs
+- [x] Document `docs/261_Phase_29.6_Admin_UI_File_Upload_And_Bug_Fixes.md`
+- [x] Frontend `npm run build` — passed
+- [x] Frontend ESLint — passed
+- [x] Backend `mvnw compile` — passed

@@ -193,11 +193,12 @@ public class ComplaintServiceImpl implements ComplaintService {
         response.setCategory(complaint.getCategory());
         response.setStatus(complaint.getStatus());
         response.setLocation(complaint.getLocation());
-        if (complaint.getImageUrl() != null) {
+if (complaint.getImageUrl() != null) {
 
+            // Return a relative URL so it works in dev (via Vite proxy)
+            // and in production (served by the same Spring Boot host).
             response.setImageUrl(
-                    "http://localhost:8080/uploads/"
-                            + complaint.getImageUrl());
+                    "/uploads/" + complaint.getImageUrl());
 
         }
 
