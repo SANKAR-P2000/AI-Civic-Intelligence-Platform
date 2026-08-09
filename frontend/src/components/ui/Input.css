@@ -126,3 +126,22 @@
 .aicip-field__input::placeholder {
   color: var(--theme-text-muted);
 }
+
+/* Theme-aware label, required asterisk, and error text
+   (the base rules above use fixed dark palette tokens; these
+   overrides keep them readable in both daylight and night mode). */
+.aicip-field__label {
+  color: var(--theme-text-primary);
+}
+
+.aicip-field__required {
+  color: var(--theme-danger);
+}
+
+.aicip-field__error {
+  color: var(--theme-danger);
+}
+
+.aicip-field__helper {
+  color: var(--theme-text-muted);
+}

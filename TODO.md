@@ -64,3 +64,11 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Confirmed backend PID on :8080 is a current `java.exe` (JDK 25) running latest code
 - [x] Frontend `npm run build` — passed
 - [x] Document `docs/262_Phase_29.7_Network_Error_Port_Conflict_Fix.md`
+
+### 8. Phase 29.8 – Daylight Mode Form Visibility Fix - ✅
+
+- [x] Fix `Input.css` — labels, required `*`, error, helper now use theme-aware `--theme-*` tokens
+- [x] Both Sign In & Create Account labels visible in daylight + night mode
+- [x] Also fixes Complaints form + Admin search labels (shared `aicip-field` classes)
+- [x] Frontend `npm run build` — passed
+- [x] Document `docs/263_Phase_29.8_Daylight_Form_Visibility_Fix.md` (with localhost usage guide)
