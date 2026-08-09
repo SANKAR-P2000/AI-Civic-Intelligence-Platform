@@ -60,4 +60,7 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Terminated stale process with `taskkill /PID 21068 /F`
 - [x] Restarted backend with latest code via `mvnw spring-boot:run -Dspring-boot.run.profiles=local` (PID 7192)
 - [x] Verified frontend `:5173 → 200`, backend `:8080 → 401` (bad creds), proxy chain works
+- [x] Verified full register→login flow via proxy → `201` + `200` with valid JWT tokens
+- [x] Confirmed backend PID on :8080 is a current `java.exe` (JDK 25) running latest code
+- [x] Frontend `npm run build` — passed
 - [x] Document `docs/262_Phase_29.7_Network_Error_Port_Conflict_Fix.md`
