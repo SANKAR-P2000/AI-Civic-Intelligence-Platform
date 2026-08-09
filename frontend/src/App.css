@@ -1,53 +1,35 @@
-.form-demo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  width: min(100%, 560px);
-}
 .app-shell {
   width: 100%;
   min-height: 100vh;
-  padding: 24px;
+  padding: 0;
 }
 
-.app-content {
+.app-header {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+  min-height: 72px;
+  padding: 12px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
 }
 
-/* ========================================
-   TABLET
-   ======================================== */
-
-@media (max-width: 1024px) {
-  .app-shell {
-    padding: 20px;
-  }
+.app-brand__title {
+  color: var(--theme-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
 }
-
-/* ========================================
-   MOBILE
-   ======================================== */
 
 @media (max-width: 768px) {
-  .app-shell {
-    padding: 16px;
+  .app-header {
+    padding: 12px 16px;
   }
 }
-
-/* ========================================
-   SMALL MOBILE
-   ======================================== */
 
 @media (max-width: 425px) {
-  .app-shell {
-    padding: 12px;
-  }
-}
-
-@media (max-width: 360px) {
-  .app-shell {
-    padding: 10px;
+  .app-header {
+    padding: 10px 12px;
   }
 }
