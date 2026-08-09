@@ -1,7 +1,9 @@
 import { Link } from "react-router";
+import { useAuth } from "../../hooks/useAuth.js";
 import "./Footer.css";
 
 function Footer() {
+  const { isAuthenticated, isAdmin } = useAuth();
   const year = new Date().getFullYear();
 
   return (
@@ -20,7 +22,12 @@ function Footer() {
           <Link to="/complaints">Report a Complaint</Link>
           <Link to="/complaints">Track Complaint</Link>
           <Link to="/services">Services</Link>
-          <Link to="/dashboard">Dashboard</Link>
+          {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+          {isAuthenticated && (
+            <Link to={isAdmin ? "/admin/complaints" : "/dashboard"}>
+              My {isAdmin ? "Admin" : "Dashboard"}
+            </Link>
+          )}
         </nav>
 
         <nav className="aicip-footer__col" aria-label="Footer company links">

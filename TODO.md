@@ -81,3 +81,12 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Verified login via browser proxy → HTTP 200 (role=CITIZEN, JWT token + refresh)
 - [x] Integration ready for next phase (Phase 30)
 - [x] Document `docs/264_Phase_29.9_Browser_Flow_Verification_And_Next_Phase.md`
+
+### 10. Phase 30 – Role-Based Access Polish & Production Config Hardening - ✅
+
+- [x] Role-aware Footer — Dashboard/"My Admin" links only for authenticated users; admin routes as /admin/complaints
+- [x] Production config hardening — JWT secret, mail, upload dir now read from env vars with safe defaults
+- [x] Local dev profile still overrides with real credentials (nothing breaks)
+- [x] Frontend `npm run build` — passed
+- [x] Backend `.\mvnw -q compile` — passed
+- [x] Document `docs/265_Phase_30_Role_Based_Access_And_Config_Hardening.md`
