@@ -1,11 +1,11 @@
 package com.sankar.aicip.controller;
 
-import com.sankar.aicip.dto.response.DashboardStatisticsResponse;
-import com.sankar.aicip.service.DashboardService;
 import com.sankar.aicip.dto.response.CategoryStatisticsResponse;
+import com.sankar.aicip.dto.response.DashboardStatisticsResponse;
 import com.sankar.aicip.dto.response.StatusStatisticsResponse;
-
+import com.sankar.aicip.service.DashboardService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +27,15 @@ public class DashboardController {
     public DashboardStatisticsResponse getDashboardStatistics() {
 
         return dashboardService.getDashboardStatistics();
+    }
+
+    @GetMapping("/mystats")
+    @PreAuthorize("hasRole('CITIZEN')")
+    public DashboardStatisticsResponse getMyStatistics(
+            Authentication authentication) {
+
+        return dashboardService.getMyStatistics(
+                authentication.getName());
     }
 
     @GetMapping("/categories")

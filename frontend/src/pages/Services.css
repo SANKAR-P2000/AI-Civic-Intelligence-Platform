@@ -1,0 +1,107 @@
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.services__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 260px;
+}
+
+.services__icon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--theme-surface-strong);
+  border: 1px solid var(--theme-border);
+}
+
+.services__title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}
+
+.services__desc {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--theme-text-secondary);
+}
+
+.services__points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--theme-border);
+}
+
+.services__points li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
+}
+
+.services__points li span {
+  color: var(--theme-accent);
+  font-weight: 700;
+}
+
+.services__cta-card {
+  text-align: center;
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.services__cta-card h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--theme-text-primary);
+}
+
+.services__cta-card p {
+  font-size: var(--font-size-lg);
+  color: var(--theme-text-secondary);
+}
+
+.services__cta-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 1024px) {
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 568px) {
+  .services__grid {
+    grid-template-columns: 1fr;
+  }
+  .services__cta-card {
+    padding: var(--space-8) var(--space-5);
+  }
+}

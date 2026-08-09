@@ -1,15 +1,16 @@
-function MainLayout({ children }) {
+import { Outlet } from "react-router";
+import Navbar from "../components/navigation/Navbar.jsx";
+import Footer from "../components/layout/Footer.jsx";
+
+// Main application layout — wraps Navbar, routed content, and Footer.
+function MainLayout() {
   return (
     <div className="app-layout">
-      <header>
-        <h1>AICIP</h1>
-      </header>
-
-      <main>{children}</main>
-
-      <footer>
-        <p>AI Civic Intelligence Platform</p>
-      </footer>
+      <Navbar />
+      <main className="app-content">
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   );
 }

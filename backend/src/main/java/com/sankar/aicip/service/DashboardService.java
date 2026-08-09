@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DashboardService {
 
-
     DashboardStatisticsResponse getDashboardStatistics();
 
+    DashboardStatisticsResponse getMyStatistics(String email);
 
     List<CategoryStatisticsResponse> getCategoryStatistics();
 

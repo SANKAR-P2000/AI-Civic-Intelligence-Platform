@@ -1,0 +1,107 @@
+.complaint-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  min-height: 100%;
+
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 40px var(--theme-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.complaint-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 48px var(--theme-shadow);
+  border-color: var(--theme-accent);
+}
+
+.complaint-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.complaint-card__id {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--theme-text-muted);
+}
+
+.complaint-card__image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--theme-border);
+}
+
+.complaint-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.complaint-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--theme-text-primary);
+}
+
+.complaint-card__desc {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--theme-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.complaint-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+}
+
+.complaint-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--theme-text-secondary);
+  background: var(--theme-surface-strong);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.complaint-card__cta {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--theme-accent);
+  background: rgba(124, 92, 255, 0.12);
+  border: 1px solid rgba(124, 92, 255, 0.25);
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+.complaint-card__cta:hover {
+  background: rgba(124, 92, 255, 0.2);
+}

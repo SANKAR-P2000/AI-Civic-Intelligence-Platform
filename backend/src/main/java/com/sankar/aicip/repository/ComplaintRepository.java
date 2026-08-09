@@ -1,19 +1,18 @@
 package com.sankar.aicip.repository;
 
+import com.sankar.aicip.dto.response.CategoryStatisticsResponse;
+import com.sankar.aicip.dto.response.StatusStatisticsResponse;
 import com.sankar.aicip.entity.Complaint;
 import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.ComplaintCategory;
 import com.sankar.aicip.enums.ComplaintStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.sankar.aicip.dto.response.CategoryStatisticsResponse;
-import com.sankar.aicip.dto.response.StatusStatisticsResponse;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
-
 
     long count();
 
@@ -22,6 +21,11 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     List<Complaint> findByCitizen(User citizen);
 
     long countByCategory(ComplaintCategory category);
+
+    long countByCitizen(User citizen);
+
+    long countByCitizenAndStatus(User citizen,
+                                 ComplaintStatus status);
 
     List<Complaint> findByStatus(ComplaintStatus status);
 
@@ -39,7 +43,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     List<Complaint> findByLocationContainingIgnoreCaseOrderByCreatedAtDesc(
             String keyword);
 
-
     @Query("""
             SELECT new com.sankar.aicip.dto.response.CategoryStatisticsResponse(
             c.category,
@@ -50,7 +53,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
             ORDER BY COUNT(c) DESC
             """)
     List<CategoryStatisticsResponse> getComplaintCountByCategory();
-
 
     @Query("""
             SELECT new com.sankar.aicip.dto.response.StatusStatisticsResponse(

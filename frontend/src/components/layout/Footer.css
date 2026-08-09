@@ -1,0 +1,101 @@
+.aicip-footer {
+  width: 100%;
+  margin-top: var(--space-16);
+  padding: var(--space-12) 24px var(--space-6);
+  background: var(--theme-bg-secondary);
+  border-top: 1px solid var(--theme-border);
+}
+
+.aicip-footer__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-10);
+}
+
+.aicip-footer__brand {
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.aicip-footer__logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aicip-footer__tagline {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--theme-text-secondary);
+}
+
+.aicip-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.aicip-footer__heading {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--theme-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.aicip-footer__col a {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
+  transition: color 180ms ease;
+}
+
+.aicip-footer__col a:hover {
+  color: var(--theme-accent);
+}
+
+.aicip-footer__bottom {
+  max-width: 1440px;
+  margin: var(--space-10) auto 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--theme-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.aicip-footer__bottom p {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-muted);
+}
+
+@media (max-width: 1024px) {
+  .aicip-footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+@media (max-width: 568px) {
+  .aicip-footer {
+    padding: var(--space-10) 20px var(--space-6);
+  }
+  .aicip-footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  .aicip-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
