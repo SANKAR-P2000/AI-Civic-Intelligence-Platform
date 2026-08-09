@@ -83,6 +83,11 @@
   font-weight: 600;
 }
 
+.dashboard__search {
+  margin-bottom: var(--space-5);
+  max-width: 420px;
+}
+
 @media (max-width: 1024px) {
   .dashboard__stats {
     grid-template-columns: repeat(2, 1fr);

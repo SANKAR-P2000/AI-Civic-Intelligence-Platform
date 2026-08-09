@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import StatCard from "../components/ui/StatCard.jsx";
 import GlassCard from "../components/ui/GlassCard.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import ComplaintCard from "../components/ui/ComplaintCard.jsx";
+import Input from "../components/ui/Input.jsx";
 import { Spinner } from "../components/ui/Spinner.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import complaintService from "../services/complaints.js";
@@ -15,6 +16,7 @@ function Dashboard() {
   const [stats, setStats] = useState(null);
   const [myComplaints, setMyComplaints] = useState([]);
   const [allComplaints, setAllComplaints] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
@@ -48,6 +50,25 @@ function Dashboard() {
     const timer = setTimeout(() => loadData(), 0);
     return () => clearTimeout(timer);
   }, [loadData]);
+
+  const source = isAdmin ? allComplaints : myComplaints;
+
+  const filteredComplaints = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return source;
+    return source.filter((c) => {
+      const haystack = [
+        c.title,
+        c.description,
+        c.location,
+        c.category,
+        c.status,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [source, search]);
 
   if (loading) {
     return (
@@ -139,11 +160,30 @@ function Dashboard() {
           </GlassCard>
         )}
 
-        <div className="dashboard__grid">
-          {(isAdmin ? allComplaints : myComplaints).map((c) => (
-            <ComplaintCard key={c.id} complaint={c} />
-          ))}
-        </div>
+        {source.length > 0 && (
+          <div className="dashboard__search">
+            <Input
+              name="search"
+              label=""
+              placeholder={`Search ${isAdmin ? "all" : "your"} complaints...`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search complaints"
+            />
+          </div>
+        )}
+
+        {filteredComplaints.length === 0 ? (
+          <GlassCard className="dashboard__empty">
+            <p>No complaints match your search.</p>
+          </GlassCard>
+        ) : (
+          <div className="dashboard__grid">
+            {filteredComplaints.map((c) => (
+              <ComplaintCard key={c.id} complaint={c} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

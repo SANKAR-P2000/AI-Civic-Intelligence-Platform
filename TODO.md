@@ -90,3 +90,16 @@ Connect backend, frontend, and database in real-time; fix integration bugs in th
 - [x] Frontend `npm run build` — passed
 - [x] Backend `.\mvnw -q compile` — passed
 - [x] Document `docs/265_Phase_30_Role_Based_Access_And_Config_Hardening.md`
+
+### 11. Phase 31 – Analytics Enhancement & Citizen Dashboard Search - ✅
+
+- [x] Add "By Date" analytics chart to `AdminAnalytics.jsx` (uses existing `getDateAnalytics()` endpoint)
+- [x] Add `formatDate()` helper to render MySQL DATE strings as readable locale dates
+- [x] Extend `BarRow`/`ChartCard` with optional `formatter` prop
+- [x] Add citizen complaint search/filter in `Dashboard.jsx` (title, description, location, category, status)
+- [x] Move `useMemo` above loaded early-return to satisfy React hooks rules
+- [x] Add "No complaints match your search" empty state + show search only when data exists
+- [x] Style search bar in `Dashboard.css`
+- [x] Frontend `npm run build` — passed
+- [x] Frontend `npm run lint` — passed
+- [x] Document `docs/266_Phase_31_Analytics_Enhancement_And_Citizen_Search.md`
