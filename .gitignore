@@ -49,3 +49,8 @@ build/
 
 # Uploaded files
 uploads/
+
+# Application logs
+backend/logs/
+*.log
+*.gz
