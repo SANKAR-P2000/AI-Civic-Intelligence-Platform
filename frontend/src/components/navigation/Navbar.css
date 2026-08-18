@@ -277,6 +277,7 @@
 
   .aicip-navbar__login-link,
   .aicip-navbar__dashboard-link,
+  .aicip-navbar__signout-btn,
   .aicip-navbar__cta,
   .aicip-navbar__actions .aicip-navbar__cta {
     display: none;

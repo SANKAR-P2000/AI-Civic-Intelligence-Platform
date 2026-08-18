@@ -31,6 +31,27 @@ export const authService = {
       tokenStore.clear();
     }
   },
+
+  async forgotPassword(email) {
+    return http.post("/auth/forgot-password", { email });
+  },
+
+  async verifyOtp(email, otp) {
+    return http.post("/auth/verify-otp", { email, otp });
+  },
+
+  async resendOtp(email) {
+    return http.post("/auth/resend-otp", { email });
+  },
+
+  async resetPassword(email, resetToken, newPassword, confirmPassword) {
+    return http.post("/auth/reset-password", {
+      email,
+      resetToken,
+      newPassword,
+      confirmPassword,
+    });
+  },
 };
 
 export default authService;

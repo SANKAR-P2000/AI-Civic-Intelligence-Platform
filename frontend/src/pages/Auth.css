@@ -69,6 +69,23 @@
   text-decoration: underline;
 }
 
+.auth__forgot-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -6px;
+}
+
+.auth__forgot-link {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
+  text-decoration: none;
+}
+
+.auth__forgot-link:hover {
+  color: var(--theme-accent);
+  text-decoration: underline;
+}
+
 @media (max-width: 425px) {
   .auth__card {
     padding: var(--space-6);

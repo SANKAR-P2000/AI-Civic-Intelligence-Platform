@@ -10,5 +10,6 @@ public interface UserService {
     UserResponse registerUser(UserRegistrationRequest request);
     LoginResponse loginUser(LoginRequest request);
     CurrentUserResponse getCurrentUser(String email);
+    void resetPassword(String email, String resetToken, String newPassword);
 
 }

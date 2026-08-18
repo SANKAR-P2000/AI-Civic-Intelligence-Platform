@@ -109,9 +109,14 @@ function Navbar() {
 
         <div className="aicip-navbar__actions">
           {isAuthenticated ? (
-            <Link to="/dashboard" className="aicip-navbar__dashboard-link">
-              Dashboard
-            </Link>
+            <>
+              <Link to="/dashboard" className="aicip-navbar__dashboard-link">
+                Dashboard
+              </Link>
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="aicip-navbar__signout-btn">
+                Sign Out
+              </Button>
+            </>
           ) : (
             <>
               <Link to="/login" className="aicip-navbar__login-link">

@@ -8,6 +8,7 @@ import Services from "../pages/Services.jsx";
 import About from "../pages/About.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
+import ForgotPassword from "../pages/ForgotPassword.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import AdminComplaints from "../pages/AdminComplaints.jsx";
 import AdminAnalytics from "../pages/AdminAnalytics.jsx";
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: "about", Component: About },
       { path: "login", Component: Login },
       { path: "register", Component: Register },
+      { path: "forgot-password", Component: ForgotPassword },
       {
         path: "dashboard",
         Component: () => (

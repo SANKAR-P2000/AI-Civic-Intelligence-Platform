@@ -17,4 +17,6 @@ public interface EmailService {
             String status
     );
 
+    void sendOtpEmail(String toEmail, String otp);
+
 }

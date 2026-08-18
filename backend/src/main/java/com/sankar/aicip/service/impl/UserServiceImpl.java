@@ -14,7 +14,10 @@ import com.sankar.aicip.exception.ResourceNotFoundException;
 import com.sankar.aicip.repository.UserRepository;
 import com.sankar.aicip.service.UserService;
 import com.sankar.aicip.service.RefreshTokenService;
+import com.sankar.aicip.service.OtpService;
 import com.sankar.aicip.security.jwt.JwtService;
+import com.sankar.aicip.exception.BadRequestException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,13 +38,15 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+    private final OtpService otpService;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
             AuthenticationManager authenticationManager,
-            RefreshTokenService refreshTokenService
+            RefreshTokenService refreshTokenService,
+            @Qualifier("emailOtpService") OtpService otpService
     ) {
 
         this.userRepository = userRepository;
@@ -49,6 +54,7 @@ public class UserServiceImpl implements UserService {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
+        this.otpService = otpService;
     }
 
     @Override
@@ -147,5 +153,23 @@ public class UserServiceImpl implements UserService {
         logger.info("Profile returned successfully for user: {}",
                 user.getEmail());
         return response;
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void resetPassword(String email, String resetToken, String newPassword) {
+        logger.info("Attempting to reset password for email: {}", email);
+        if (!otpService.isValidResetToken(email, resetToken)) {
+            throw new BadRequestException("Invalid or expired reset token.");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found."));
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        otpService.invalidateOtp(email);
+        logger.info("Password reset successfully for email: {}", email);
     }
 }

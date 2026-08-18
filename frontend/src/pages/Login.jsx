@@ -78,6 +78,12 @@ function Login() {
             autoComplete="current-password"
           />
 
+          <div className="auth__forgot-container">
+            <Link to="/forgot-password" className="auth__forgot-link">
+              Forgot Password?
+            </Link>
+          </div>
+
           <Button
             type="submit"
             size="lg"
