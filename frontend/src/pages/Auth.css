@@ -1,17 +1,24 @@
+/* ===================================================
+   AICIP — Auth Pages (Login / Register / Forgot PW)
+   =================================================== */
+
+/* Container — fills viewport minus navbar/footer */
 .auth {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 140px);
-  padding: var(--space-8) 0;
+  padding: var(--space-8) var(--space-4);
 }
 
+/* Card width */
 .auth__card {
   width: 100%;
   max-width: 480px;
   padding: var(--space-8);
 }
 
+/* Brand / logo block */
 .auth__brand {
   text-align: center;
   margin-bottom: var(--space-6);
@@ -33,13 +40,69 @@
   color: var(--theme-text-secondary);
 }
 
+/* ── Step indicator ───────────────────────────── */
+.auth__steps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.auth__step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--theme-border);
+  transition: background var(--transition-normal), transform var(--transition-normal);
+}
+
+.auth__step-dot--active {
+  background: var(--theme-accent);
+  transform: scale(1.4);
+}
+
+.auth__step-dot--done {
+  background: var(--color-success);
+}
+
+.auth__step-line {
+  flex: 1;
+  max-width: 40px;
+  height: 2px;
+  background: var(--theme-border);
+  border-radius: var(--radius-full);
+}
+
+/* Form layout */
 .auth__form {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
+/* Hint text (e.g. "We sent code to …") */
+.auth__hint {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
+  text-align: center;
+  line-height: 1.6;
+  padding: var(--space-3) var(--space-4);
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-md);
+}
+
+.auth__hint b {
+  color: var(--theme-text-primary);
+  font-weight: 600;
+}
+
+/* Error alert */
 .auth__error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -48,10 +111,29 @@
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
+/* Success message */
+.auth__success {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* Submit button */
 .auth__submit {
   margin-top: var(--space-2);
 }
 
+.auth__submit--full {
+  width: 100%;
+}
+
+/* Footer text (sign in / register toggle) */
 .auth__footer {
   margin-top: var(--space-5);
   text-align: center;
@@ -69,6 +151,7 @@
   text-decoration: underline;
 }
 
+/* Forgot password link inside login form */
 .auth__forgot-container {
   display: flex;
   justify-content: flex-end;
@@ -79,6 +162,7 @@
   font-size: var(--font-size-sm);
   color: var(--theme-text-secondary);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .auth__forgot-link:hover {
@@ -86,8 +170,106 @@
   text-decoration: underline;
 }
 
+/* ── Resend OTP row ───────────────────────────── */
+.auth__resend-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+/* Resend OTP styled button — ghost/outlined style */
+.auth__resend-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  height: 40px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+
+  /* Active (can resend) state */
+  background: transparent;
+  color: var(--theme-accent);
+  border: 1.5px solid var(--theme-accent);
+}
+
+.auth__resend-btn:not(:disabled):hover {
+  background: var(--theme-accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.auth__resend-btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* Disabled / cooldown state */
+.auth__resend-btn:disabled {
+  background: transparent;
+  color: var(--theme-text-muted);
+  border-color: var(--theme-border);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* Cooldown timer chip inside the button */
+.auth__resend-timer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: rgba(127, 137, 156, 0.2);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--theme-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Success completion block ─────────────────── */
+.auth__success-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-4) 0;
+  text-align: center;
+}
+
+.auth__success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid rgba(34, 197, 94, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.auth__success-text {
+  font-size: var(--font-size-md);
+  color: var(--theme-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Responsive ───────────────────────────────── */
 @media (max-width: 425px) {
   .auth__card {
-    padding: var(--space-6);
+    padding: var(--space-6) var(--space-5);
   }
 }
