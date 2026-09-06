@@ -319,15 +319,35 @@ class UserControllerTest {
 
     @Test
     void getProfile_ShouldReturnOk() throws Exception {
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getName()).thenReturn("sankar@example.com");
 
-        // Act & Assert
+        com.sankar.aicip.dto.response.UserProfileResponse response =
+                new com.sankar.aicip.dto.response.UserProfileResponse();
+        response.setId(1L);
+        response.setFullName("Sankar P");
+        response.setEmail("sankar@example.com");
+        response.setPhoneNumber("9876543210");
+        response.setRole("CITIZEN");
+
+        when(userService.getUserProfile("sankar@example.com")).thenReturn(response);
+
+        mockMvc.perform(
+                        get("/api/users/profile")
+                                .principal(authentication)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.fullName").value("Sankar P"))
+                .andExpect(jsonPath("$.email").value("sankar@example.com"));
+    }
+
+    @Test
+    void getProfile_ShouldReturnUnauthorized_WhenPrincipalIsNull() throws Exception {
         mockMvc.perform(
                         get("/api/users/profile")
                 )
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath("$").value("Authenticated User Profile")
-                );
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

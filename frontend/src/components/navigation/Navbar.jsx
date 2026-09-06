@@ -86,6 +86,20 @@ function Navbar() {
                 >
                   Dashboard
                 </NavLink>
+                <NavLink
+                  to="/profile"
+                  className="aicip-navbar__link"
+                  onClick={closeMenu}
+                >
+                  Profile
+                </NavLink>
+                <NavLink
+                  to="/settings"
+                  className="aicip-navbar__link"
+                  onClick={closeMenu}
+                >
+                  Settings
+                </NavLink>
                 <Button variant="ghost" size="sm" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -112,6 +126,12 @@ function Navbar() {
             <>
               <Link to="/dashboard" className="aicip-navbar__dashboard-link">
                 Dashboard
+              </Link>
+              <Link to="/profile" className="aicip-navbar__dashboard-link">
+                Profile
+              </Link>
+              <Link to="/settings" className="aicip-navbar__dashboard-link">
+                Settings
               </Link>
               <Button variant="ghost" size="sm" onClick={handleLogout} className="aicip-navbar__signout-btn">
                 Sign Out

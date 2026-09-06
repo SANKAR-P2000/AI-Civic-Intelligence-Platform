@@ -1,49 +1,42 @@
 package com.sankar.aicip.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 @Schema(
-        name = "Current User Response",
-        description = "Response containing details of the authenticated user."
+        name = "User Profile Response",
+        description = "Response containing safe profile information for the authenticated user."
 )
-public class CurrentUserResponse {
-    @Schema(
-            description = "Unique user identifier",
-            example = "1"
-    )
+public class UserProfileResponse {
+
+    @Schema(description = "Unique user identifier", example = "1")
     private Long id;
-    @Schema(
-            description = "Citizen full name",
-            example = "Sankar P"
-    )
+
+    @Schema(description = "User full name", example = "Sankar P")
     private String fullName;
-    @Schema(
-            description = "Registered email address",
-            example = "sankar@example.com"
-    )
+
+    @Schema(description = "Registered email address", example = "sankar@example.com")
     private String email;
-    @Schema(
-            description = "Registered mobile number",
-            example = "9876543210"
-    )
+
+    @Schema(description = "Registered phone number", example = "9876543210")
     private String phoneNumber;
-    @Schema(
-            description = "Authenticated user role",
-            example = "CITIZEN"
-    )
+
+    @Schema(description = "User role", example = "CITIZEN")
     private String role;
+
+    @Schema(description = "Email verification status", example = "true")
     private boolean emailVerified;
+
+    @Schema(description = "Phone verification status", example = "false")
     private boolean phoneVerified;
+
+    @Schema(description = "Profile picture URL or path", example = "/uploads/avatars/user1.jpg")
     private String profilePictureUrl;
-    @Schema(
-            description = "User account creation timestamp",
-            example = "2026-08-02T10:30:45"
-    )
+
+    @Schema(description = "User creation timestamp", example = "2026-08-02T10:30:45")
     private LocalDateTime createdAt;
 
-    public CurrentUserResponse() {
+    public UserProfileResponse() {
     }
 
     public Long getId() {

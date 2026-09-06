@@ -19,6 +19,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.sankar.aicip.dto.request.UpdateProfileRequest;
+import com.sankar.aicip.dto.request.ChangePasswordRequest;
+import com.sankar.aicip.dto.response.UserProfileResponse;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
+
 @Tag(
         name = "User Management",
         description = "APIs for user registration, authentication, and profile management"
@@ -79,10 +85,61 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Get Authenticated Profile",
+            description = "Returns profile details for the logged-in user."
+    )
     @GetMapping("/profile")
-    public ResponseEntity<String> getProfile() {
+    public ResponseEntity<UserProfileResponse> getProfile(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String email = authentication.getName();
+        logger.info("Fetching profile for: {}", email);
+        UserProfileResponse response = userService.getUserProfile(email);
+        return ResponseEntity.ok(response);
+    }
 
-        return ResponseEntity.ok("Authenticated User Profile");
+    @Operation(
+            summary = "Update Authenticated Profile",
+            description = "Updates full name and phone number for the logged-in user."
+    )
+    @PatchMapping("/profile")
+    public ResponseEntity<UserProfileResponse> updateProfile(
+            Authentication authentication,
+            @Valid @RequestBody UpdateProfileRequest request) {
+        String email = authentication.getName();
+        logger.info("Updating profile for: {}", email);
+        UserProfileResponse response = userService.updateUserProfile(email, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Upload Profile Picture",
+            description = "Uploads and updates avatar profile picture for logged-in user."
+    )
+    @PostMapping("/profile/picture")
+    public ResponseEntity<UserProfileResponse> updateProfilePicture(
+            Authentication authentication,
+            @RequestParam("file") MultipartFile file) {
+        String email = authentication.getName();
+        logger.info("Uploading profile picture for: {}", email);
+        UserProfileResponse response = userService.updateProfilePicture(email, file);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Change Password",
+            description = "Changes password for the logged-in user."
+    )
+    @PatchMapping("/change-password")
+    public ResponseEntity<Map<String, String>> changePassword(
+            Authentication authentication,
+            @Valid @RequestBody ChangePasswordRequest request) {
+        String email = authentication.getName();
+        logger.info("Password change requested for: {}", email);
+        userService.changePassword(email, request);
+        return ResponseEntity.ok(Map.of("message", "Password changed successfully."));
     }
 
     @Operation(

@@ -29,6 +29,15 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    @Column(nullable = false, name = "email_verified")
+    private boolean emailVerified = false;
+
+    @Column(nullable = false, name = "phone_verified")
+    private boolean phoneVerified = false;
+
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -81,6 +90,30 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public boolean isPhoneVerified() {
+        return phoneVerified;
+    }
+
+    public void setPhoneVerified(boolean phoneVerified) {
+        this.phoneVerified = phoneVerified;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     public LocalDateTime getCreatedAt() {

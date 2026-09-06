@@ -12,6 +12,8 @@ import ForgotPassword from "../pages/ForgotPassword.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import AdminComplaints from "../pages/AdminComplaints.jsx";
 import AdminAnalytics from "../pages/AdminAnalytics.jsx";
+import Profile from "../pages/Profile.jsx";
+import Settings from "../pages/Settings.jsx";
 import NotFound from "../pages/NotFound.jsx";
 
 const router = createBrowserRouter([
@@ -31,6 +33,22 @@ const router = createBrowserRouter([
         Component: () => (
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        Component: () => (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        Component: () => (
+          <ProtectedRoute>
+            <Settings />
           </ProtectedRoute>
         ),
       },

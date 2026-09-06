@@ -52,6 +52,40 @@ export const authService = {
       confirmPassword,
     });
   },
+
+  async getProfile() {
+    return http.get("/users/profile");
+  },
+
+  async updateProfile({ fullName, phoneNumber }) {
+    return http.patch("/users/profile", { fullName, phoneNumber });
+  },
+
+  async changePassword({ currentPassword, newPassword, confirmPassword }) {
+    return http.patch("/users/change-password", {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+  },
+
+  async uploadProfilePicture(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return http.post("/users/profile/picture", formData);
+  },
+
+  async sendVerificationOtp(email) {
+    return http.post("/auth/send-verification-otp", { email });
+  },
+
+  async verifyEmail(email, otp) {
+    return http.post("/auth/verify-email", { email, otp });
+  },
+
+  async resendEmailOtp(email) {
+    return http.post("/auth/resend-email-otp", { email });
+  },
 };
 
 export default authService;

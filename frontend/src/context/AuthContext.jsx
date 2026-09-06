@@ -68,6 +68,28 @@ function AuthProvider({ children }) {
     return me;
   }, []);
 
+  const updateProfile = useCallback(async (payload) => {
+    const updated = await authService.updateProfile(payload);
+    setUser(updated);
+    return updated;
+  }, []);
+
+  const uploadProfilePicture = useCallback(async (file) => {
+    const updated = await authService.uploadProfilePicture(file);
+    setUser(updated);
+    return updated;
+  }, []);
+
+  const changePassword = useCallback(async (payload) => {
+    return authService.changePassword(payload);
+  }, []);
+
+  const verifyEmail = useCallback(async (email, otp) => {
+    const res = await authService.verifyEmail(email, otp);
+    await refreshUser();
+    return res;
+  }, [refreshUser]);
+
   const value = useMemo(
     () => ({
       user,
@@ -76,11 +98,15 @@ function AuthProvider({ children }) {
       register,
       logout,
       refreshUser,
+      updateProfile,
+      uploadProfilePicture,
+      changePassword,
+      verifyEmail,
       isAuthenticated: Boolean(user),
       isAdmin: user?.role === "ADMIN",
       isCitizen: user?.role === "CITIZEN",
     }),
-    [user, loading, login, register, logout, refreshUser],
+    [user, loading, login, register, logout, refreshUser, updateProfile, uploadProfilePicture, changePassword, verifyEmail],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -71,6 +71,27 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "A new OTP has been sent."));
     }
 
+    @PostMapping("/send-verification-otp")
+    public ResponseEntity<Map<String, String>> sendVerificationOtp(
+            @Valid @RequestBody ResendEmailOtpRequest request) {
+        userService.sendEmailVerificationOtp(request.getEmail());
+        return ResponseEntity.ok(Map.of("message", "Email verification OTP has been sent."));
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<Map<String, String>> verifyEmail(
+            @Valid @RequestBody VerifyEmailRequest request) {
+        userService.verifyEmailOtp(request.getEmail(), request.getOtp());
+        return ResponseEntity.ok(Map.of("message", "Email verified successfully."));
+    }
+
+    @PostMapping("/resend-email-otp")
+    public ResponseEntity<Map<String, String>> resendEmailOtp(
+            @Valid @RequestBody ResendEmailOtpRequest request) {
+        userService.resendEmailVerificationOtp(request.getEmail());
+        return ResponseEntity.ok(Map.of("message", "A new verification OTP has been sent."));
+    }
+
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> resetPassword(
             @Valid @RequestBody ResetPasswordRequest request) {
