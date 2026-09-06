@@ -50,7 +50,22 @@ export const complaintService = {
 
   // Admin — update status
   adminUpdateStatus(id, status) {
-    return http.put(`/admin/complaints/${id}/status`, { status });
+    return http.put(`/complaints/${id}/status`, null, { params: { status } });
+  },
+
+  // Phase 32 — Search & filter complaints with pagination
+  searchComplaints(params) {
+    return http.get("/complaints/search", { params });
+  },
+
+  // Phase 32 — Spatial / nearby radius search
+  searchNearbyComplaints(params) {
+    return http.get("/complaints/search/nearby", { params });
+  },
+
+  // Phase 32 — Aggregate analytics summary
+  getAnalyticsSummary() {
+    return http.get("/complaints/analytics");
   },
 };
 

@@ -24,9 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import com.sankar.aicip.dto.request.ComplaintSearchRequest;
+import com.sankar.aicip.dto.response.ComplaintAnalyticsSummaryResponse;
+import com.sankar.aicip.dto.response.PageResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 @Tag(
         name = "Complaint Management",
-        description = "APIs for creating, tracking, viewing, and updating complaints"
+        description = "APIs for creating, tracking, viewing, searching, and updating complaints"
 )
 @RestController
 @RequestMapping("/api/complaints")
@@ -63,6 +69,52 @@ public class ComplaintController {
                 response.getId());
 
         return response;
+    }
+
+    @Operation(
+            summary = "Search & Filter Complaints",
+            description = "Multi-criteria search, filtering, and database-level pagination for complaints."
+    )
+    @GetMapping("/search")
+    public ResponseEntity<PageResponse<ComplaintResponse>> searchComplaints(
+            @ModelAttribute ComplaintSearchRequest request) {
+
+        logger.info("Complaint search requested with keyword: '{}', category: {}, status: {}, page: {}",
+                request.getKeyword(), request.getCategory(), request.getStatus(), request.getPage());
+
+        PageResponse<ComplaintResponse> response = complaintService.searchComplaints(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Spatial / Nearby Complaint Search",
+            description = "Finds complaints within a specified radius (in kilometers) of geographic coordinates."
+    )
+    @GetMapping("/search/nearby")
+    public ResponseEntity<PageResponse<ComplaintResponse>> searchNearbyComplaints(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam(defaultValue = "5.0") Double radiusKm,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        logger.info("Spatial search requested for lat: {}, lng: {}, radiusKm: {}", latitude, longitude, radiusKm);
+
+        PageResponse<ComplaintResponse> response =
+                complaintService.searchNearbyComplaints(latitude, longitude, radiusKm, page, size);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Get Complaint Analytics Summary",
+            description = "Returns aggregate complaint statistics grouped by status, category, location, and date."
+    )
+    @GetMapping("/analytics")
+    public ResponseEntity<ComplaintAnalyticsSummaryResponse> getAnalyticsSummary() {
+        logger.info("Fetching complaint analytics summary.");
+        ComplaintAnalyticsSummaryResponse summary = complaintService.getAnalyticsSummary();
+        return ResponseEntity.ok(summary);
     }
 
     @Operation(

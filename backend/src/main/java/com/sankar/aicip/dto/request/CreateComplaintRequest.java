@@ -48,6 +48,18 @@ public class CreateComplaintRequest {
     private String location;
 
     @Schema(
+            description = "Optional latitude coordinate",
+            example = "13.0827"
+    )
+    private Double latitude;
+
+    @Schema(
+            description = "Optional longitude coordinate",
+            example = "80.2707"
+    )
+    private Double longitude;
+
+    @Schema(
             description = "Optional image URL supporting the complaint",
             example = "https://example.com/images/street-light.jpg"
     )
@@ -86,6 +98,22 @@ public class CreateComplaintRequest {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getImageUrl() {

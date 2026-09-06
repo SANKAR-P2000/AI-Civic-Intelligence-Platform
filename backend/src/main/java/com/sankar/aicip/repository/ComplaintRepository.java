@@ -6,13 +6,16 @@ import com.sankar.aicip.entity.Complaint;
 import com.sankar.aicip.entity.User;
 import com.sankar.aicip.enums.ComplaintCategory;
 import com.sankar.aicip.enums.ComplaintStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
+public interface ComplaintRepository extends JpaRepository<Complaint, Long>, JpaSpecificationExecutor<Complaint> {
 
     long count();
 
@@ -110,4 +113,30 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
             ORDER BY FUNCTION('DATE', c.createdAt) DESC
             """)
     List<Object[]> getDateAnalytics();
+
+    @Query(value = """
+            SELECT c.*, ( 6371 * acos( cos( radians(:lat) ) * cos( radians( c.latitude ) )
+            * cos( radians( c.longitude ) - radians(:lng) ) + sin( radians(:lat) )
+            * sin( radians( c.latitude ) ) ) ) AS distance
+            FROM complaints c
+            WHERE c.latitude IS NOT NULL AND c.longitude IS NOT NULL
+            HAVING distance <= :radiusKm
+            ORDER BY distance ASC
+            """,
+            countQuery = """
+            SELECT count(*) FROM (
+                SELECT c.id, ( 6371 * acos( cos( radians(:lat) ) * cos( radians( c.latitude ) )
+                * cos( radians( c.longitude ) - radians(:lng) ) + sin( radians(:lat) )
+                * sin( radians( c.latitude ) ) ) ) AS distance
+                FROM complaints c
+                WHERE c.latitude IS NOT NULL AND c.longitude IS NOT NULL
+                HAVING distance <= :radiusKm
+            ) as nearby
+            """,
+            nativeQuery = true)
+    Page<Complaint> findNearbyComplaints(
+            @Param("lat") double lat,
+            @Param("lng") double lng,
+            @Param("radiusKm") double radiusKm,
+            Pageable pageable);
 }

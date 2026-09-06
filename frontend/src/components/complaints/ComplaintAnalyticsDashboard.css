@@ -1,0 +1,155 @@
+.aicip-analytics-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.aicip-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.aicip-metric-card {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.aicip-metric-card .metric-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--font-weight-bold);
+}
+
+.aicip-metric-card .metric-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.aicip-metric-card .metric-sub {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.aicip-metric-card.total .metric-value { color: var(--color-primary, #3b82f6); }
+.aicip-metric-card.pending .metric-value { color: #f59e0b; }
+.aicip-metric-card.in-progress .metric-value { color: #3b82f6; }
+.aicip-metric-card.resolved .metric-value { color: #10b981; }
+
+.aicip-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+.aicip-chart-card {
+  padding: var(--space-5);
+}
+
+.aicip-chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.aicip-chart-card h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.aicip-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.aicip-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.bar-title {
+  text-transform: capitalize;
+}
+
+.bar-track {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.bar-fill.status-pending { background: #f59e0b; }
+.bar-fill.status-in_progress { background: #3b82f6; }
+.bar-fill.status-resolved { background: #10b981; }
+.bar-fill.status-rejected { background: #ef4444; }
+.bar-fill.category { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+
+/* Trend Column Visualization */
+.aicip-trend-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 160px;
+  padding-top: var(--space-4);
+}
+
+.aicip-trend-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+  height: 100%;
+}
+
+.trend-bar-wrapper {
+  flex: 1;
+  width: 100%;
+  max-width: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.trend-bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--color-primary, #3b82f6), #1d4ed8);
+  border-radius: var(--radius-md);
+  transition: height 0.3s ease;
+}
+
+.trend-date {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.trend-count {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
